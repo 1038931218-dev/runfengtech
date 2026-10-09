@@ -30,7 +30,7 @@ jobs:
         run: pip install -r requirements.txt
 
       - name: Build static pages
-        run: python app.py build
+        run: PAGES_PREFIX= python app.py build
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3

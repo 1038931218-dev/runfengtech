@@ -35,7 +35,7 @@ SITE = {
     'domain': 'homesmartlab.com',
     'phone': '177-6047-2101',
     'mobile': '177-6047-2101',
-    'email': 'business@runfengtech.com',
+    'email': '262633158@qq.com',
     'address': '四川省南充市嘉陵区九州名苑5栋一楼 菜鸟驿站',
     'icp': '沪ICP备2026000000号-1',
     'year': '2026',
