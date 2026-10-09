@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 Disallow: /api/
-Sitemap: /sitemap.xml
+Sitemap: https://homesmartlab.com/sitemap.xml
