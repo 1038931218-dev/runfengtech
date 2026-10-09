@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
+  <defs>
+    <linearGradient id="gB" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#0b5fff"/>
+      <stop offset="1" stop-color="#00d4ff"/>
+    </linearGradient>
+  </defs>
+  <!-- R 的左竖 -->
+  <rect x="14" y="14" width="9" height="36" rx="2" fill="url(#gB)"/>
+  <!-- R 的上横 + 斜腿 -->
+  <path d="M19 14 L44 14 Q52 14 52 22 Q52 30 44 30 L26 30 L26 36 L50 50 L50 50 L39 50 L19 36 Z"
+        fill="none" stroke="url(#gB)" stroke-width="5" stroke-linejoin="round"/>
+  <!-- F 的下横（负空间叠在 R 右下，形成 RF 交错） -->
+  <path d="M30 50 L54 50" stroke="#0b5fff" stroke-width="5" stroke-linecap="round" opacity="0.35"/>
+</svg>

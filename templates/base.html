@@ -14,7 +14,7 @@
   <header class="site-header">
     <div class="container nav-wrap">
       <a class="brand" href="{{ url_for('index') }}">
-        <span class="brand-mark">RF</span>
+        <img class="brand-logo" src="{{ url_for('static', filename='logo-a.svg') }}" alt="润锋科技 logo" />
         <span class="brand-name">{{ site.name }}</span>
       </a>
       <nav class="nav">
@@ -45,7 +45,7 @@
     <div class="container footer-grid">
       <div class="footer-col">
         <div class="brand brand-foot">
-          <span class="brand-mark">RF</span>
+          <img class="brand-logo" src="{{ url_for('static', filename='logo-a.svg') }}" alt="润锋科技 logo" />
           <span class="brand-name">{{ site.name }}</span>
         </div>
         <p class="muted">{{ site.slogan }}</p>

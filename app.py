@@ -268,10 +268,14 @@ def build_static():
         os.makedirs(dst, exist_ok=True)
         for fn in os.listdir(src):
             shutil.copy2(os.path.join(src, fn), os.path.join(dst, fn))
-    for fn in ('favicon.svg', 'robots.txt', 'sitemap.xml'):
-        p = os.path.join(BASE_DIR, 'static', fn)
-        if os.path.exists(p):
-            shutil.copy2(p, os.path.join(out_dir, 'static', fn))
+    # 复制 static/ 根目录下的所有静态文件（favicon/logo/robots/sitemap 等）
+    static_root = os.path.join(BASE_DIR, 'static')
+    static_dst = os.path.join(out_dir, 'static')
+    os.makedirs(static_dst, exist_ok=True)
+    for fn in os.listdir(static_root):
+        p = os.path.join(static_root, fn)
+        if os.path.isfile(p):
+            shutil.copy2(p, os.path.join(static_dst, fn))
     log.info('static assets copied to build/static/')
 
     print(f'\nStatic build complete. Files in {out_dir}:')
