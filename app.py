@@ -236,21 +236,21 @@ def build_static():
         ('/about', 'about/index.html'),
         ('/contact', 'contact/index.html'),
     ]
-    # GitHub Pages 部署在 <user>.github.io/<repo>/，所以绝对路径要加仓库前缀
-    # 用环境变量 PAGES_PREFIX 控制，默认空（本地 build 验证时不加）
-    prefix = os.environ.get('PAGES_PREFIX', '/runfengtech')
+
+    # 构建路径前缀：
+    #   绑自定义域名（homesmartlab.com）→ 空（路径从 / 开始）
+    #   纯子路径（user.github.io/runfengtech/）→ /runfengtech
+    # 由 workflow 里的 PAGES_PREFIX 环境变量控制，默认空（即按绑域名构建）
+    prefix = os.environ.get('PAGES_PREFIX', '')
 
     with app.test_client() as c:
         for url, rel in pages:
             r = c.open(url)
             assert r.status_code == 200, f'page {url} returned {r.status_code}'
             html = r.data.decode('utf-8')
-            # 把所有站内绝对路径 /xxx 改成 /<prefix>/xxx，保证 Pages 子路径下可达
-            # （资源 url_for('static') 生成 /static/xxx，也一并前缀）
             if prefix:
                 html = html.replace('href="/', f'href="{prefix}/')
                 html = html.replace('src="/', f'src="{prefix}/')
-            # 清理被错误替换的 ICP 链接等（原模板里 site.icp 不该有 href）
             target = os.path.join(out_dir, rel)
             os.makedirs(os.path.dirname(target), exist_ok=True)
             with open(target, 'w', encoding='utf-8') as f:
