@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+{% block title %}业务线 — {{ site.name }}{% endblock %}
+
+{% block content %}
+<section class="page-head">
+  <div class="container">
+    <h1>业务线</h1>
+    <p>四大方向，按需组合，也可单独采购。下面每个业务线都有详情页，列明交付物与技术栈。</p>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <div class="grid grid-2">
+      {% for s in services %}
+        <div class="card svc-card-tall">
+          <div class="svc-icon-lg">{{ s.icon }}</div>
+          <h2>{{ s.title }}</h2>
+          <p class="lead-sm">{{ s.desc }}</p>
+          <div class="chips">
+            {% for it in s.list %}<span class="chip">{{ it }}</span>{% endfor %}
+          </div>
+          <div class="tech-block">
+            <h5>技术栈</h5>
+            <ul class="dotlist">
+              {% for t in s.tech %}<li>{{ t }}</li>{% endfor %}
+            </ul>
+          </div>
+          <a class="btn btn-primary btn-sm" href="{{ url_for('service_detail', sid=s.id) }}">{{ s.title }} 详情 →</a>
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<section class="section cta-band">
+  <div class="container cta-inner">
+    <div>
+      <h2>不确定选哪个？</h2>
+      <p>告诉我们你的业务目标，我们帮你选最合适的方向。</p>
+    </div>
+    <a href="{{ url_for('contact') }}" class="btn btn-light">免费诊断 →</a>
+  </div>
+</section>
+{% endblock %}

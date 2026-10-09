@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+{% block title %}500 — 服务器错误 · {{ site.name }}{% endblock %}
+
+{% block content %}
+<section class="section" style="padding:120px 0">
+  <div class="container center">
+    <div class="err-code">500</div>
+    <h1>服务器暂时无法响应</h1>
+    <p class="muted">我们的工程师正在处理，请稍后再试。如持续出现请联系：{{ site.phone }}</p>
+    <div class="hero-actions" style="justify-content:center">
+      <a class="btn btn-primary" href="{{ url_for('index') }}">回到首页</a>
+    </div>
+  </div>
+</section>
+{% endblock %}

@@ -1,0 +1,26 @@
+# Python 依赖
+__pycache__/
+*.pyc
+*.pyo
+
+# 构建产物（GitHub Actions 会生成 build/，不必提交）
+build/
+*.egg-info/
+dist/
+
+# 本地数据
+data/messages/*.json
+!data/messages/.gitkeep
+
+# 环境与 IDE
+.env
+.venv/
+venv/
+.idea/
+.vscode/
+*.swp
+.DS_Store
+
+# 日志
+*.log
+logs/

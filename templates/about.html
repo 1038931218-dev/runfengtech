@@ -1,0 +1,81 @@
+{% extends 'base.html' %}
+{% block title %}关于我们 — {{ site.name }}{% endblock %}
+
+{% block content %}
+<section class="page-head">
+  <div class="container">
+    <span class="tag">关于我们</span>
+    <h1>为什么是润锋科技</h1>
+    <p class="lead">我们相信，技术只有落到业务上才有价值。我们不做"能跑就行"的项目，做的是能持续被使用、被迭代的系统。</p>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container about-grid">
+    <div class="about-text">
+      <h2>公司定位</h2>
+      <p>
+        {{ site.full_name }} 成立于 2018 年，是一家专注于企业级数字化交付的技术公司。
+        我们不做"大而全"的集成商，而是在 <strong>Web、桌面、移动、AI</strong> 四个方向上做深做透，
+        为中型企业和大企业的创新业务单元提供稳定、可交接的技术服务。
+      </p>
+      <p>
+        团队 60 余人，工程师占比 78%。核心成员来自一线互联网与大型软件厂商，
+        既懂工程落地，也懂技术演进。我们坚持<strong>"交付可验证、代码可继承、长期可陪跑"</strong>三原则。
+      </p>
+    </div>
+    <div class="about-cards">
+      <div class="card"><h3>🎯 使命</h3><p>让技术真正解决业务问题，而不是制造新问题。</p></div>
+      <div class="card"><h3>👁 愿景</h3><p>成为中国中型企业最信赖的"技术外脑"。</p></div>
+      <div class="card"><h3>⚖️ 价值观</h3><p>透明 · 可验证 · 长期主义 · 客户成功</p></div>
+      <div class="card"><h3>🏅 质量底线</h3><p>代码 100% 可执行、文档 100% 齐全、SLA 违约有赔付。</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="section section-alt">
+  <div class="container">
+    <div class="section-head">
+      <h2>我们的交付方式</h2>
+      <p>透明、可追踪、每两周一个可演示节点</p>
+    </div>
+    <div class="process">
+      {% for p in process %}
+        <div class="process-step">
+          <div class="process-num">{{ '%02d' | format(p.step) }}</div>
+          <h4>{{ p.title }}</h4>
+          <p>{{ p.desc }}</p>
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <div class="section-head">
+      <h2>部分客户</h2>
+      <p>不同行业，不同规模，但都看重"交付可靠性"</p>
+    </div>
+    <div class="grid grid-4">
+      {% for c in clients %}
+        <div class="card client-card">
+          <span class="client-domain">{{ c.domain }}</span>
+          <h4>{{ c.name }}</h4>
+          <p>{{ c.desc }}</p>
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<section class="section cta-band">
+  <div class="container cta-inner">
+    <div>
+      <h2>认识我们，从一次对话开始。</h2>
+      <p>留下你的问题，我们 1 个工作日内回复。</p>
+    </div>
+    <a href="{{ url_for('contact') }}" class="btn btn-light">联系我们 →</a>
+  </div>
+</section>
+{% endblock %}

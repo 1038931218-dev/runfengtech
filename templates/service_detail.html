@@ -1,0 +1,66 @@
+{% extends 'base.html' %}
+{% block title %}{{ svc.title }} — {{ site.name }}{% endblock %}
+
+{% block content %}
+<section class="page-head">
+  <div class="container">
+    <span class="tag">业务线</span>
+    <h1>{{ svc.icon }} {{ svc.title }}</h1>
+    <p class="lead">{{ svc.desc }}</p>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container detail-grid">
+    <div class="detail-main">
+      <h2>可交付物</h2>
+      <div class="card-list">
+        {% for it in svc.list %}
+          <div class="card-item">
+            <span class="card-check">✓</span>
+            <span>{{ it }}</span>
+          </div>
+        {% endfor %}
+      </div>
+
+      <h2>技术栈</h2>
+      <div class="chips">
+        {% for t in svc.tech %}<span class="chip chip-lg">{{ t }}</span>{% endfor %}
+      </div>
+
+      <h2>为什么选润锋</h2>
+      <ul class="why-list">
+        <li><strong>交付可验证</strong> — 每两周可演示，拒绝黑盒开发。</li>
+        <li><strong>代码可继承</strong> — 完整源码、文档、测试一并交付。</li>
+        <li><strong>长期陪跑</strong> — 上线不是终点，持续优化与 SLA 保障。</li>
+      </ul>
+    </div>
+
+    <aside class="detail-side">
+      <div class="card side-card">
+        <h3>快速询价</h3>
+        <p class="muted">3 分钟填需求，1 个工作日内出报价与排期。</p>
+        <a class="btn btn-primary" href="{{ url_for('contact') }}">提交需求</a>
+      </div>
+      <div class="card side-card">
+        <h3>相关案例</h3>
+        <ul class="dotlist">
+          <li>某连锁零售 · 电商中台重构</li>
+          <li>某制造上市公司 · MES 桌面端</li>
+          <li>某新能源车企 · 内部 AI 知识库</li>
+        </ul>
+      </div>
+    </aside>
+  </div>
+</section>
+
+<section class="section cta-band">
+  <div class="container cta-inner">
+    <div>
+      <h2>想了解 {{ svc.title }} 的更多细节？</h2>
+      <p>直接找我们聊，把场景说清楚，我们给方案。</p>
+    </div>
+    <a href="{{ url_for('contact') }}" class="btn btn-light">立即沟通 →</a>
+  </div>
+</section>
+{% endblock %}

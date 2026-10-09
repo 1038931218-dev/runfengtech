@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>{% block title %}{{ site.name }} — {{ site.slogan }}{% endblock %}</title>
+  <meta name="description" content="{% block description %}{{ site.name }}专注网站开发、Windows 软件、手机 APP 开发与 AI 部署，为企业提供端到端的技术解决方案。{% endblock %}" />
+  <link rel="icon" href="{{ url_for('static', filename='favicon.svg') }}" type="image/svg+xml" />
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" />
+  {% block head %}{% endblock %}
+</head>
+<body>
+  <!-- 顶部导航 -->
+  <header class="site-header">
+    <div class="container nav-wrap">
+      <a class="brand" href="{{ url_for('index') }}">
+        <span class="brand-mark">RF</span>
+        <span class="brand-name">{{ site.name }}</span>
+      </a>
+      <nav class="nav">
+        <a href="{{ url_for('index') }}" class="{{ 'active' if request.endpoint == 'index' }}">首页</a>
+        <a href="{{ url_for('services') }}" class="{{ 'active' if request.endpoint in ('services','service_detail') }}">业务线</a>
+        <a href="{{ url_for('about') }}" class="{{ 'active' if request.endpoint == 'about' }}">关于我们</a>
+        <a href="{{ url_for('contact') }}" class="nav-cta {{ 'active' if request.endpoint == 'contact' }}">联系我们</a>
+      </nav>
+      <button class="nav-toggle" aria-label="菜单" onclick="document.querySelector('.nav').classList.toggle('open')">☰</button>
+    </div>
+  </header>
+
+  <main>
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        <div class="container flash-wrap">
+          {% for cat, msg in messages %}
+            <div class="flash flash-{{ cat }}">{{ msg }}</div>
+          {% endfor %}
+        </div>
+      {% endif %}
+    {% endwith %}
+    {% block content %}{% endblock %}
+  </main>
+
+  <!-- 底部 -->
+  <footer class="site-footer">
+    <div class="container footer-grid">
+      <div class="footer-col">
+        <div class="brand brand-foot">
+          <span class="brand-mark">RF</span>
+          <span class="brand-name">{{ site.name }}</span>
+        </div>
+        <p class="muted">{{ site.slogan }}</p>
+        <p class="muted small">{{ site.full_name }}</p>
+      </div>
+      <div class="footer-col">
+        <h4>联系我们</h4>
+        <ul class="contact-list">
+          <li>📞 {{ site.phone }}</li>
+          <li>📱 {{ site.mobile }}</li>
+          <li>✉️ {{ site.email }}</li>
+          <li>📍 {{ site.address }}</li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>业务线</h4>
+        <ul class="link-list">
+          <li><a href="{{ url_for('service_detail', sid='web') }}">网站开发</a></li>
+          <li><a href="{{ url_for('service_detail', sid='windows') }}">Windows 软件</a></li>
+          <li><a href="{{ url_for('service_detail', sid='app') }}">手机 APP 开发</a></li>
+          <li><a href="{{ url_for('service_detail', sid='ai') }}">AI 部署</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <div class="container">
+        <span>© {{ site.year }} {{ site.full_name }} · 沪ICP备2026000000号</span>
+        <span class="muted">技术支持：{{ site.name }} 研发团队</span>
+      </div>
+    </div>
+  </footer>
+
+  <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+</body>
+</html>

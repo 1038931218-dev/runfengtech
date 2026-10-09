@@ -1,0 +1,53 @@
+# 1. 让 GitHub Actions 静态构建
+#    跑 `python app.py build` 把全部页面预渲染成 build/，然后发布到 Pages
+# 2. 或者用 Vercel / PythonAnywhere / Railway 跑真后端
+
+name: Publish to GitHub Pages
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main, master]
+
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install deps
+        run: pip install -r requirements.txt
+
+      - name: Build static pages
+        run: python app.py build
+
+      - name: Publish
+        uses: actions/deploy-pages@v4
+        with:
+          path: build
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy
+        id: deployment
+        uses: actions/deploy-pages@v4
+        with:
+          path: build

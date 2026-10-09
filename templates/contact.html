@@ -1,0 +1,76 @@
+{% extends 'base.html' %}
+{% block title %}联系我们 — {{ site.name }}{% endblock %}
+
+{% block content %}
+<section class="page-head">
+  <div class="container">
+    <span class="tag">联系我们</span>
+    <h1>告诉我们你的需求</h1>
+    <p class="lead">3 分钟填完，1 个工作日内 1 对 1 沟通。也可以直接拨打下方电话。</p>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container contact-grid">
+    <form class="contact-form card" method="post" action="{{ url_for('contact') }}">
+      <div class="form-row">
+        <label class="form-field">
+          <span>您的称呼 *</span>
+          <input type="text" name="name" value="{{ form.name if form }}" placeholder="王工" required />
+        </label>
+        <label class="form-field">
+          <span>公司 / 机构</span>
+          <input type="text" name="company" value="{{ form.company if form }}" placeholder="润锋科技有限公司" />
+        </label>
+      </div>
+      <div class="form-row">
+        <label class="form-field">
+          <span>电话</span>
+          <input type="tel" name="phone" value="{{ form.phone if form }}" placeholder="13800008888" />
+        </label>
+        <label class="form-field">
+          <span>邮箱</span>
+          <input type="email" name="email" value="{{ form.email if form }}" placeholder="you@company.com" />
+        </label>
+      </div>
+      <label class="form-field">
+        <span>想了解的业务线</span>
+        <select name="service">
+          <option value="">请选择（可选）</option>
+          {% for s in services %}
+            <option value="{{ s.id }}" {% if form and form.service == s.id %}selected{% endif %}>{{ s.title }}</option>
+          {% endfor %}
+          <option value="other">其他 / 多个</option>
+        </select>
+      </label>
+      <label class="form-field">
+        <span>需求描述 *</span>
+        <textarea name="message" rows="5" placeholder="项目目标、预算区间、期望上线时间…" required>{{ form.message if form }}</textarea>
+      </label>
+      <button type="submit" class="btn btn-primary btn-block">提交需求 →</button>
+      <p class="muted small center">提交后我们将通过你预留的联系方式与你沟通，不会用于其他用途。</p>
+    </form>
+
+    <aside class="contact-side">
+      <div class="card">
+        <h3>📞 直接联系</h3>
+        <ul class="contact-list">
+          <li>400 电话：{{ site.phone }}</li>
+          <li>手机：{{ site.mobile }}</li>
+          <li>邮箱：{{ site.email }}</li>
+          <li>地址：{{ site.address }}</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3>🕘 工作时间</h3>
+        <p class="muted">周一至周五 09:00 – 18:30</p>
+        <p class="muted small">紧急线上故障 7×24 响应（SLA 客户）</p>
+      </div>
+      <div class="card">
+        <h3>💬 也可以加微信</h3>
+        <p class="muted">加企业微信或扫码，备注"{{ site.name }}"</p>
+      </div>
+    </aside>
+  </div>
+</section>
+{% endblock %}
