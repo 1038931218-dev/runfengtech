@@ -1,0 +1,37 @@
+# 每天 ping 一次 Supabase，防止免费项目因空闲被暂停
+# Supabase 免费层：7 天无活动会暂停项目（实际策略 1 天），定时保活最稳
+name: keepalive-supabase
+
+on:
+  # 每天 4 点（北京时间 12:00）跑一次
+  schedule:
+    - cron: "0 4 * * *"
+  # 手动触发（想立即保活时）
+  workflow_dispatch: {}
+
+jobs:
+  keepalive:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Ping Supabase REST API
+        run: |
+          # 从 supabase-config.js 里读取项目 URL 和 anon key
+          CONFIG="supabase/config.js"
+          [ -f "$CONFIG" ] || CONFIG="static/js/supabase-config.js"
+          URL=$(grep -oE 'url:[[:space:]]*"[^"]+"' "$CONFIG" | cut -d'"' -f2)
+          KEY=$(grep -oE 'anonKey:[[:space:]]*"[^"]+"' "$CONFIG" | cut -d'"' -f2)
+
+          if [ -z "$URL" ] || [ "$URL" = "YOUR_SUPABASE_URL" ]; then
+            echo "Supabase 尚未配置，跳过 keepalive"
+            exit 0
+          fi
+
+          echo "Pinging $URL ..."
+          # /rest/v1 是公开端点，带 apikey 即可，不消耗配额
+          curl -sS -o /dev/null -w "HTTP %{http_code}\n" \
+            -H "apikey: $KEY" \
+            -H "Authorization: Bearer $KEY" \
+            "$URL/rest/v1/?limit=1"
+          echo "Keepalive OK"

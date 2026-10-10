@@ -110,6 +110,10 @@ def service_detail(sid):
         return redirect(url_for('services'))
     return render_template('service_detail.html', site=SITE, svc=svc)
 
+@app.route('/admin')
+def admin():
+    return render_template('admin.html', site=SITE)
+
 @app.route('/about')
 def about():
     return render_template('about.html', site=SITE, process=PROCESS, clients=CLIENTS)
@@ -234,6 +238,7 @@ def build_static():
         ('/services/ai', 'services/ai/index.html'),
         ('/about', 'about/index.html'),
         ('/contact', 'contact/index.html'),
+        ('/admin', 'admin/index.html'),
     ]
 
     # 构建路径前缀：

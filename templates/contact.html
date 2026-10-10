@@ -47,7 +47,7 @@
         <span>需求描述 *</span>
         <textarea name="message" rows="5" placeholder="项目目标、预算区间、期望上线时间…" required>{{ form.message if form }}</textarea>
       </label>
-      <button type="submit" class="btn btn-primary btn-block">提交需求 →</button>
+      <button type="submit" class="btn btn-primary btn-block" id="submit-btn">提交需求 →</button>
       <p class="muted small center">提交后我们将通过你预留的联系方式与你沟通，不会用于其他用途。</p>
     </form>
 
@@ -74,3 +74,6 @@
   </div>
 </section>
 {% endblock %}
+
+<script src="{{ url_for('static', filename='js/supabase-config.js') }}"></script>
+<script src="{{ url_for('static', filename='js/contact-api.js') }}"></script>
