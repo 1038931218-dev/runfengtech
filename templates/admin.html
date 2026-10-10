@@ -1,125 +1,347 @@
 {% extends 'base.html' %}
-{% block title %}后台管理 — {{ site.name }}{% endblock %}
+{% block title %}管理后台 — {{ site.name }}{% endblock %}
 
 {% block head %}
 <style>
-  .admin-wrap { max-width: 1080px; margin: 0 auto; }
+  /* ===== 专业后台布局：左侧导航 + 内容区 ===== */
+  .admin-layout { display: grid; grid-template-columns: 230px 1fr; min-height: calc(100vh - 200px); }
+  .admin-side {
+    background: #0f1728; color: #cbd5e1; padding: 24px 0;
+    display: flex; flex-direction: column;
+  }
+  .admin-side .side-brand {
+    display: flex; align-items: center; gap: 10px;
+    padding: 0 20px 20px; border-bottom: 1px solid #1e293b; margin-bottom: 16px;
+  }
+  .admin-side .side-brand img { width: 34px; height: 34px; }
+  .admin-side .side-brand .t { color: #fff; font-weight: 700; font-size: .95rem; line-height: 1.3; }
+  .admin-side .side-brand .t small { display: block; color: #64748b; font-weight: 400; font-size: .72rem; }
+  .admin-side nav a {
+    display: flex; align-items: center; gap: 10px;
+    padding: 11px 20px; color: #cbd5e1; text-decoration: none; font-size: .9rem;
+    border-left: 3px solid transparent; cursor: pointer;
+  }
+  .admin-side nav a:hover { background: #17223a; }
+  .admin-side nav a.active { background: #17223a; border-left-color: var(--primary); color: #fff; font-weight: 600; }
+  .admin-side .side-foot { margin-top: auto; padding: 16px 20px 0; border-top: 1px solid #1e293b; }
+  .admin-side .side-foot a { color: #64748b; font-size: .8rem; text-decoration: none; }
+  .admin-side .side-foot a:hover { color: #cbd5e1; }
+
+  .admin-main { padding: 28px 32px; background: var(--bg-alt); }
+  .admin-main h2.tab-title { margin: 0 0 4px; font-size: 1.25rem; }
+  .admin-main .tab-desc { color: var(--muted); font-size: .88rem; margin-bottom: 22px; }
+
   .admin-card {
     background: var(--card); border: 1px solid var(--line); border-radius: var(--radius);
-    padding: 28px; box-shadow: var(--shadow);
+    padding: 22px 24px; margin-bottom: 18px; box-shadow: var(--shadow);
   }
-  .admin-status { min-height: 20px; font-size: .88rem; margin-bottom: 14px; }
-  .admin-status.ok { color: #167a45; }
-  .admin-status.err { color: #b3352f; }
-  #login-view .login-form { display: flex; flex-direction: column; gap: 14px; max-width: 380px; }
-  .login-form .form-field { display: flex; flex-direction: column; gap: 6px; }
-  .admin-hint { color: var(--muted); font-size: .85rem; margin-top: 18px; line-height: 1.6; }
-  .admin-hint code { background: var(--bg-alt); padding: 1px 6px; border-radius: 5px; font-size: .82rem; }
+  .admin-card h3 { font-size: 1rem; margin-bottom: 16px; color: var(--ink); }
 
-  .stat-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 18px; }
-  .stat-card {
-    background: var(--bg-alt); border: 1px solid var(--line); border-radius: 12px; padding: 18px 20px;
+  .frow { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  .frow.single { grid-template-columns: 1fr; }
+  .ff { display: flex; flex-direction: column; gap: 6px; margin-bottom: 14px; }
+  .ff label { font-size: .82rem; color: var(--muted); font-weight: 600; }
+  .ff input, .ff textarea, .ff select {
+    width: 100%; box-sizing: border-box; padding: 9px 12px;
+    border: 1px solid var(--line); border-radius: 9px; background: #fff;
+    font-size: .9rem; font-family: inherit; color: var(--ink);
   }
-  .stat-card .num { font-size: 2rem; font-weight: 800; color: var(--ink); }
-  .stat-card .lbl { color: var(--muted); font-size: .85rem; }
-  .stat-card.unread .num { color: var(--primary); }
+  .ff input:focus, .ff textarea:focus { outline: none; border-color: var(--primary); box-shadow: 0 0 0 3px rgba(11,95,255,.12); }
+  .ff textarea { resize: vertical; min-height: 80px; }
 
-  .toolbar { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; margin-bottom: 14px; }
-  .toolbar .spacer { flex: 1; }
-  .btn-link {
-    background: none; border: none; color: var(--primary); cursor: pointer;
-    font-size: .85rem; padding: 2px 6px; border-radius: 6px; font-weight: 500;
-  }
+  .save-bar { display: flex; align-items: center; gap: 12px; padding: 14px 0 4px; }
+  .save-msg { font-size: .85rem; min-height: 20px; }
+  .save-msg.ok { color: #167a45; }
+  .save-msg.err { color: #b3352f; }
+
+  /* 概览 */
+  .stat-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin-bottom: 18px; }
+  .stat-card { background: var(--card); border: 1px solid var(--line); border-radius: 12px; padding: 16px 18px; }
+  .stat-card .num { font-size: 1.7rem; font-weight: 800; }
+  .stat-card .lbl { color: var(--muted); font-size: .8rem; }
+  .stat-card.hl .num { color: var(--primary); }
+
+  table.messages { width: 100%; border-collapse: collapse; font-size: .88rem; }
+  table.messages th, table.messages td { text-align: left; padding: 10px 9px; border-bottom: 1px solid var(--line); vertical-align: top; }
+  table.messages th { color: var(--muted); font-size: .75rem; text-transform: uppercase; letter-spacing: .04em; }
+  .msg-cell { max-width: 300px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .empty { color: var(--muted); text-align: center; padding: 24px; }
+  .unread-dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; background: var(--primary); margin-right: 6px; }
+  .btn-link { background: none; border: none; color: var(--primary); cursor: pointer; font-size: .82rem; padding: 2px 6px; border-radius: 6px; }
   .btn-link:hover { background: #eaf2ff; }
   .btn-link.danger { color: #b3352f; }
   .btn-link.danger:hover { background: #fdecec; }
+  .toolbar { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; margin-bottom: 12px; }
+  .toolbar .spacer { flex: 1; }
 
-  .table-wrap { overflow-x: auto; }
-  table.messages { width: 100%; border-collapse: collapse; font-size: .9rem; }
-  table.messages th, table.messages td {
-    text-align: left; padding: 12px 10px; border-bottom: 1px solid var(--line); vertical-align: top;
+  .svc-edit-block { border: 1px dashed var(--line); border-radius: 10px; padding: 16px; margin-bottom: 14px; }
+  .svc-edit-block .bt { font-weight: 700; margin-bottom: 12px; font-size: .92rem; }
+
+  .login-wrap { max-width: 420px; margin: 40px auto; }
+
+  @media (max-width: 860px) {
+    .admin-layout { grid-template-columns: 1fr; }
+    .admin-side { flex-direction: row; flex-wrap: wrap; padding: 12px; }
+    .admin-side .side-brand { border: none; padding: 0 8px; }
+    .admin-side nav { display: flex; flex-wrap: wrap; }
+    .admin-side nav a { border-left: none; border-bottom: 3px solid transparent; }
+    .admin-side .side-foot { margin: 0; padding: 0 8px; border: none; }
+    .stat-row { grid-template-columns: repeat(2, 1fr); }
   }
-  table.messages th { color: var(--muted); font-size: .78rem; text-transform: uppercase; letter-spacing: .04em; }
-  .msg-cell { max-width: 320px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-  .unread-dot {
-    display: inline-block; width: 8px; height: 8px; border-radius: 50%;
-    background: var(--primary); margin-right: 6px;
-  }
-  tr.empty td { text-align: center; color: var(--muted); padding: 32px; }
-  .empty { color: var(--muted); }
 </style>
 {% endblock %}
 
 {% block content %}
-<section class="page-head">
-  <div class="container">
-    <span class="tag">后台管理</span>
-    <h1>留言管理</h1>
-    <p class="lead">查看、标记、导出官网联系表单的提交。数据来自 Supabase 云数据库。</p>
+<div class="admin-layout" id="admin-root">
+
+  <!-- 未配置 / 登录视图 -->
+  <div class="login-wrap admin-card" id="view-unconfigured" style="display:none">
+    <h3>后台尚未配置</h3>
+    <p class="muted">请先在 Supabase 运行 <code>supabase-cms.sql</code> 并填入 <code>supabase-config.js</code>。</p>
   </div>
-</section>
 
-<section class="section">
-  <div class="container admin-wrap">
-    <div class="admin-card" id="admin-unconfigured" style="display:none">
-      <h2>后台尚未配置</h2>
-      <p class="muted">
-        请先完成 Supabase 初始化（见仓库 <code>supabase-setup.sql</code> 与 <code>DEPLOY_GITHUB.md</code>），
-        并把 <code>static/js/supabase-config.js</code> 里的占位值替换为真实项目 URL 和 anon key，再重新构建部署。
-      </p>
-    </div>
+  <div class="login-wrap admin-card" id="view-login">
+    <h3>登录管理后台</h3>
+    <p class="muted small" style="margin-top:0">仅管理员账号可登录（邮箱固定为 262633158@qq.com）</p>
+    <div class="save-msg err" id="login-msg"></div>
+    <div class="ff"><label>邮箱</label><input type="email" id="login-email" placeholder="262633158@qq.com" /></div>
+    <div class="ff"><label>密码</label><input type="password" id="login-password" placeholder="••••••••" /></div>
+    <button class="btn btn-primary btn-block" id="login-btn">登 录</button>
+  </div>
 
-    <div class="admin-card" id="login-view">
-      <h2>登录后台</h2>
-      <div class="admin-status" id="admin-status"></div>
-      <form class="login-form" id="login-form">
-        <label class="form-field">
-          <span>邮箱</span>
-          <input type="email" id="login-email" autocomplete="username" placeholder="262633158@qq.com" required />
-        </label>
-        <label class="form-field">
-          <span>密码</span>
-          <input type="password" id="login-password" autocomplete="current-password" required />
-        </label>
-        <button type="submit" class="btn btn-primary">登 录</button>
-      </form>
-      <p class="admin-hint">
-        提示：管理员账号需在 Supabase 控制台 → Authentication → Users 中预先添加
-        （邮箱固定为 <code>262633158@qq.com</code>，并关闭邮箱二次确认），且 RLS 策略仅允许该邮箱读取数据。
-      </p>
-    </div>
+  <!-- 主界面 -->
+  <div class="admin-layout-inner" id="view-app" style="display:none">
+    <div class="admin-layout">
+      <aside class="admin-side">
+        <div class="side-brand">
+          <img src="{{ url_for('static', filename='logo-a.svg') }}" alt="logo" />
+          <div class="t">管理后台<small>{{ site.name }}</small></div>
+        </div>
+        <nav id="admin-nav">
+          <a data-tab="overview" class="active">📊 概览</a>
+          <a data-tab="settings">⚙️ 网站设置</a>
+          <a data-tab="pages">📄 页面编辑</a>
+          <a data-tab="services">🧩 业务线</a>
+          <a data-tab="messages">✉️ 留言管理</a>
+        </nav>
+        <div class="side-foot">
+          <a href="https://{{ site.domain }}" target="_blank" rel="noopener">↗ 预览官网</a>
+          <div style="height:8px"></div>
+          <a id="logout-link">退出登录</a>
+        </div>
+      </aside>
 
-    <div class="admin-card" id="dash-view" style="display:none">
-      <div class="stat-row">
-        <div class="stat-card"><div class="num" id="stat-total">0</div><div class="lbl">留言总数</div></div>
-        <div class="stat-card unread"><div class="num" id="stat-unread">0</div><div class="lbl">未读</div></div>
-      </div>
-      <div class="toolbar">
-        <button class="btn btn-ghost btn-sm" id="btn-refresh">↻ 刷新</button>
-        <button class="btn btn-ghost btn-sm" id="btn-export">⬇ 导出 CSV</button>
-        <div class="spacer"></div>
-        <button class="btn btn-ghost btn-sm" id="btn-logout">退出登录</button>
-      </div>
-      <div class="table-wrap">
-        <table class="messages">
-          <thead>
-            <tr>
-              <th style="min-width:140px">姓名 / 公司</th>
-              <th style="min-width:130px">联系方式</th>
-              <th style="min-width:90px">意向</th>
-              <th>留言</th>
-              <th style="min-width:150px">时间</th>
-              <th style="min-width:120px">操作</th>
-            </tr>
-          </thead>
-          <tbody id="msg-body">
-            <tr><td colspan="6" class="empty">加载中…</td></tr>
-          </tbody>
-        </table>
-      </div>
+      <main class="admin-main">
+
+        <!-- ============ 概览 ============ -->
+        <section class="tab-pane" id="pane-overview">
+          <h2 class="tab-title">概览</h2>
+          <p class="tab-desc">留言统计与最近动态</p>
+          <div class="stat-row">
+            <div class="stat-card hl"><div class="num" id="ov-total">0</div><div class="lbl">留言总数</div></div>
+            <div class="stat-card hl"><div class="num" id="ov-unread">0</div><div class="lbl">未读</div></div>
+            <div class="stat-card"><div class="num" id="ov-week">0</div><div class="lbl">近 7 天</div></div>
+            <div class="stat-card"><div class="num" id="ov-services">4</div><div class="lbl">业务线</div></div>
+          </div>
+          <div class="admin-card">
+            <h3>最近 5 条留言</h3>
+            <div class="table-wrap">
+              <table class="messages">
+                <thead><tr><th>姓名</th><th>联系</th><th>意向</th><th>留言</th><th>时间</th></tr></thead>
+                <tbody id="ov-recent"><tr><td colspan="5" class="empty">加载中…</td></tr></tbody>
+              </table>
+            </div>
+            <div class="save-msg small muted">💡 在「留言管理」里可标记已读、删除或导出 CSV</div>
+          </div>
+        </section>
+
+        <!-- ============ 网站设置 ============ -->
+        <section class="tab-pane" id="pane-settings" style="display:none">
+          <h2 class="tab-title">网站设置</h2>
+          <p class="tab-desc">保存后对所有访客实时生效（无需重新部署）</p>
+
+          <div class="admin-card">
+            <h3>品牌信息</h3>
+            <div class="frow">
+              <div class="ff"><label>站点简称（导航/标题用）</label><input data-cmsf="general.site_name" /></div>
+              <div class="ff"><label>完整公司名</label><input data-cmsf="general.full_name" /></div>
+            </div>
+            <div class="ff"><label>标语（Slogan）</label><input data-cmsf="general.slogan" /></div>
+          </div>
+
+          <div class="admin-card">
+            <h3>SEO</h3>
+            <div class="ff"><label>浏览器标签标题（首页）</label><input data-cmsf="general.site_title" placeholder="如：润锋科技 — 网站开发 · APP · AI 部署" /></div>
+            <div class="ff"><label>Meta 描述</label><textarea data-cmsf="general.description"></textarea></div>
+          </div>
+
+          <div class="admin-card">
+            <h3>联系方式（页脚/联系页）</h3>
+            <div class="frow">
+              <div class="ff"><label>电话</label><input data-cmsf="general.phone" /></div>
+              <div class="ff"><label>手机</label><input data-cmsf="general.mobile" /></div>
+            </div>
+            <div class="frow">
+              <div class="ff"><label>邮箱</label><input data-cmsf="general.email" /></div>
+              <div class="ff"><label>地址</label><input data-cmsf="general.address" /></div>
+            </div>
+          </div>
+
+          <div class="admin-card">
+            <h3>页脚文案</h3>
+            <div class="frow">
+              <div class="ff"><label>版权行</label><input data-cmsf="general.copyright" placeholder="如：© 2026 润锋科技有限公司" /></div>
+              <div class="ff"><label>技术支持行</label><input data-cmsf="general.tech_support" /></div>
+            </div>
+          </div>
+
+          <div class="save-bar">
+            <button class="btn btn-primary" data-save="general">保存网站设置</button>
+            <span class="save-msg" id="msg-general"></span>
+          </div>
+        </section>
+
+        <!-- ============ 页面编辑 ============ -->
+        <section class="tab-pane" id="pane-pages" style="display:none">
+          <h2 class="tab-title">页面编辑</h2>
+          <p class="tab-desc">编辑首页 / 关于我们 / 联系页文案，支持简单 HTML（&lt;strong&gt; &lt;br&gt; 等）</p>
+
+          <div class="admin-card">
+            <h3>首页 · Hero 区</h3>
+            <div class="ff"><label>小标签（Hero 上方）</label><input data-cmsf="hero.badge" /></div>
+            <div class="ff"><label>大标题（支持 &lt;br&gt; 换行、&lt;strong&gt; 加粗）</label><textarea data-cmsf="hero.title"></textarea></div>
+            <div class="ff"><label>副标题段落</label><textarea data-cmsf="hero.subtitle"></textarea></div>
+            <div class="frow">
+              <div class="ff"><label>主按钮文字</label><input data-cmsf="hero.cta_primary" /></div>
+              <div class="ff"><label>次按钮文字</label><input data-cmsf="hero.cta_secondary" /></div>
+            </div>
+            <h3 style="margin-top:20px">首页 · 数据展示</h3>
+            <div class="frow">
+              <div class="ff"><label>年深耕</label><input data-cmsf="hero.stat_years" placeholder="8+" /></div>
+              <div class="ff"><label>交付项目</label><input data-cmsf="hero.stat_projects" placeholder="120+" /></div>
+              <div class="ff"><label>行业覆盖</label><input data-cmsf="hero.stat_industries" placeholder="30+" /></div>
+              <div class="ff"><label>客户续约率</label><input data-cmsf="hero.stat_retention" placeholder="99.2%" /></div>
+            </div>
+          </div>
+
+          <div class="admin-card">
+            <h3>首页 · 板块标题</h3>
+            <div class="frow">
+              <div class="ff"><label>业务线板块标题</label><input data-cmsf="index.services_title" /></div>
+              <div class="ff"><label>业务线板块副标题</label><input data-cmsf="index.services_sub" /></div>
+              <div class="ff"><label>交付流程标题</label><input data-cmsf="index.process_title" /></div>
+              <div class="ff"><label>交付流程副标题</label><input data-cmsf="index.process_sub" /></div>
+              <div class="ff"><label>客户与成果标题</label><input data-cmsf="index.clients_title" /></div>
+              <div class="ff"><label>客户与成果副标题</label><input data-cmsf="index.clients_sub" /></div>
+            </div>
+          </div>
+
+          <div class="admin-card">
+            <h3>联系我们 · 底部 CTA 横幅</h3>
+            <div class="frow">
+              <div class="ff"><label>CTA 标题</label><input data-cmsf="cta.title" /></div>
+              <div class="ff"><label>CTA 副标题</label><input data-cmsf="cta.subtitle" /></div>
+              <div class="ff"><label>CTA 按钮文字</label><input data-cmsf="cta.button" /></div>
+            </div>
+          </div>
+
+          <div class="admin-card">
+            <h3>关于我们 · 页面</h3>
+            <div class="frow">
+              <div class="ff"><label>页面大标题</label><input data-cmsf="about.title" /></div>
+              <div class="ff"><label>页面副标题</label><input data-cmsf="about.subtitle" /></div>
+            </div>
+            <div class="ff"><label>「公司定位」小节标题</label><input data-cmsf="about.section1_title" /></div>
+            <div class="ff"><label>定位段落 1（支持 HTML）</label><textarea data-cmsf="about.section1_p1"></textarea></div>
+            <div class="ff"><label>定位段落 2（支持 HTML）</label><textarea data-cmsf="about.section1_p2"></textarea></div>
+              <div class="ff"><label>使命卡片标题</label><input data-cmsf="about.card1_title" placeholder="🎯 使命" /></div>
+              <div class="ff"><label>使命卡片内容</label><input data-cmsf="about.card1_text" /></div>
+            </div>
+            <div class="frow">
+              <div class="ff"><label>愿景卡片标题</label><input data-cmsf="about.card2_title" placeholder="👁 愿景" /></div>
+              <div class="ff"><label>愿景卡片内容</label><input data-cmsf="about.card2_text" /></div>
+            </div>
+            <div class="frow">
+              <div class="ff"><label>价值观卡片标题</label><input data-cmsf="about.card3_title" placeholder="⚖️ 价值观" /></div>
+              <div class="ff"><label>价值观卡片内容</label><input data-cmsf="about.card3_text" /></div>
+            </div>
+            <div class="frow">
+              <div class="ff"><label>质量底线卡片标题</label><input data-cmsf="about.card4_title" placeholder="🏅 质量底线" /></div>
+              <div class="ff"><label>质量底线卡片内容</label><input data-cmsf="about.card4_text" /></div>
+            </div>
+          </div>
+
+          <div class="admin-card">
+            <h3>联系我们 · 页面头</h3>
+            <div class="frow">
+              <div class="ff"><label>页面大标题</label><input data-cmsf="contact_page.title" /></div>
+              <div class="ff"><label>页面副标题</label><input data-cmsf="contact_page.subtitle" /></div>
+            </div>
+          </div>
+
+          <div class="admin-card">
+            <h3>业务线总览页</h3>
+            <div class="frow">
+              <div class="ff"><label>页面大标题</label><input data-cmsf="services_page.title" /></div>
+              <div class="ff"><label>页面副标题</label><input data-cmsf="services_page.subtitle" /></div>
+            </div>
+          </div>
+
+          <div class="save-bar">
+            <button class="btn btn-primary" data-save="pages">保存页面内容</button>
+            <span class="save-msg" id="msg-pages"></span>
+          </div>
+        </section>
+
+        <!-- ============ 业务线 ============ -->
+        <section class="tab-pane" id="pane-services" style="display:none">
+          <h2 class="tab-title">业务线管理</h2>
+          <p class="tab-desc">编辑四条业务线的标题与描述（同步显示在首页卡片 / 业务总览页 / 详情页）</p>
+
+          {% for s in services %}
+          <div class="admin-card">
+            <div class="svc-edit-block">
+              <div class="bt">{{ s.icon }} 业务线：{{ s.title }}（{{ s.id }}）</div>
+              <div class="frow">
+                <div class="ff"><label>卡片标题</label><input data-cmsf="services.{{ s.id }}.title" /></div>
+                <div class="ff"><label>卡片描述</label><input data-cmsf="services.{{ s.id }}.desc" /></div>
+              </div>
+            </div>
+          </div>
+          {% endfor %}
+
+          <div class="save-bar">
+            <button class="btn btn-primary" data-save="services">保存业务线</button>
+            <span class="save-msg" id="msg-services"></span>
+          </div>
+        </section>
+
+        <!-- ============ 留言管理 ============ -->
+        <section class="tab-pane" id="pane-messages" style="display:none">
+          <h2 class="tab-title">留言管理</h2>
+          <p class="tab-desc">查看官网联系表单提交，支持标记已读、删除、导出</p>
+          <div class="toolbar">
+            <button class="btn btn-ghost btn-sm" id="msg-refresh">↻ 刷新</button>
+            <button class="btn btn-ghost btn-sm" id="msg-export">⬇ 导出 CSV</button>
+            <div class="spacer"></div>
+          </div>
+          <div class="admin-card">
+            <div class="table-wrap">
+              <table class="messages">
+                <thead><tr>
+                  <th style="min-width:150px">姓名 / 公司</th><th style="min-width:130px">联系方式</th>
+                  <th style="min-width:90px">意向</th><th>留言</th><th style="min-width:140px">时间</th><th style="min-width:110px">操作</th>
+                </tr></thead>
+                <tbody id="msg-body"><tr><td colspan="6" class="empty">加载中…</td></tr></tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+      </main>
     </div>
   </div>
-</section>
+</div>
 
 <script src="{{ url_for('static', filename='js/supabase-config.js') }}"></script>
 <script src="{{ url_for('static', filename='js/admin.js') }}"></script>

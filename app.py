@@ -94,6 +94,60 @@ CLIENTS = [
 # ---------------------------------------------------------------------------
 # 页面路由
 # ---------------------------------------------------------------------------
+def _load_cms():
+    """读取本地 cms-overrides.json（若存在）覆盖默认内容。
+    供本地开发（python app.py）用；GitHub Pages 静态构建时由前端 cms.js 直连 Supabase。
+    """
+    import json as _json
+    p = os.path.join(BASE_DIR, 'cms-overrides.json')
+    if not os.path.exists(p):
+        return {}
+    try:
+        with open(p, 'r', encoding='utf-8') as f:
+            return _json.load(f)
+    except Exception:
+        return {}
+
+
+def _apply_cms(d):
+    """把 CMS 覆盖数据合并到 SITE / SERVICES 等默认内容上（深合并）。"""
+    if not d:
+        return
+
+    def deep(base, override):
+        if not isinstance(override, dict):
+            return base
+        for k, v in override.items():
+            if isinstance(v, dict) and isinstance(base.get(k), dict):
+                base[k] = deep(base[k], v)
+            elif v not in (None, ''):
+                base[k] = v
+        return base
+
+    global SITE
+    if 'general' in d:
+        g = d['general']
+        SITE = dict(SITE)
+        keymap = {
+            'site_name': 'name', 'full_name': 'full_name', 'slogan': 'slogan',
+            'phone': 'phone', 'mobile': 'mobile', 'email': 'email', 'address': 'address',
+        }
+        for ck, sk in keymap.items():
+            if g.get(ck):
+                SITE[sk] = g[ck]
+
+    for s in SERVICES:
+        o = d.get('services', {}).get(s['id'])
+        if o:
+            if o.get('title'):
+                s['title'] = o['title']
+            if o.get('desc'):
+                s['desc'] = o['desc']
+
+
+_CMS = _load_cms()
+_apply_cms(_CMS)
+
 @app.route('/')
 def index():
     return render_template('index.html', site=SITE, services=SERVICES,
@@ -299,9 +353,8 @@ def build_static():
             print('  ' * (level + 1) + fn)
 
 
-# 静态表单端点（GitHub Pages 模式）—— 提交到配置的 API，或落本地
-CONTACT_API = os.environ.get('CONTACT_API', 'http://127.0.0.1:5000/api/contact')
-
+# GitHub Pages 模式下没有可运行的后端，/contact 的 POST 由前端 JS 直连 Supabase；
+# 本地开发（python app.py 直接跑）时保留旧端点用于调试。
 if __name__ == '__main__':
     import sys
     if len(sys.argv) > 1 and sys.argv[1] == 'build':

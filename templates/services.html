@@ -4,8 +4,8 @@
 {% block content %}
 <section class="page-head">
   <div class="container">
-    <h1>业务线</h1>
-    <p>四大方向，按需组合，也可单独采购。下面每个业务线都有详情页，列明交付物与技术栈。</p>
+    <h1 data-cms="services_page.title">业务线</h1>
+    <p data-cms="services_page.subtitle">四大方向，按需组合，也可单独采购。下面每个业务线都有详情页，列明交付物与技术栈。</p>
   </div>
 </section>
 
@@ -15,8 +15,8 @@
       {% for s in services %}
         <div class="card svc-card-tall">
           <div class="svc-icon-lg">{{ s.icon }}</div>
-          <h2>{{ s.title }}</h2>
-          <p class="lead-sm">{{ s.desc }}</p>
+          <h2 data-cms="services.{{ s.id }}.title">{{ s.title }}</h2>
+          <p class="lead-sm" data-cms="services.{{ s.id }}.desc">{{ s.desc }}</p>
           <div class="chips">
             {% for it in s.list %}<span class="chip">{{ it }}</span>{% endfor %}
           </div>

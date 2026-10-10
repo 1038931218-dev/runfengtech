@@ -6,22 +6,22 @@
 <section class="hero">
   <div class="container hero-inner">
     <div class="hero-text">
-      <span class="hero-tag">技术驱动 · 端到端交付</span>
-      <h1>{{ site.name }}<br />让技术落地，为业务赋能</h1>
-      <p class="lead">
+      <span class="hero-tag" data-cms="hero.badge">技术驱动 · 端到端交付</span>
+      <h1 data-cms-html="hero.title">{{ site.name }}<br />让技术落地，为业务赋能</h1>
+      <p class="lead" data-cms-html="hero.subtitle">
         专注 <strong>网站开发</strong>、<strong>Windows 软件</strong>、<strong>手机 APP</strong> 与
         <strong>AI 部署</strong> 四条核心业务线，
         从需求到上线，提供可衡量、可持续的技术服务。
       </p>
       <div class="hero-actions">
-        <a href="{{ url_for('contact') }}" class="btn btn-primary">立即咨询</a>
-        <a href="{{ url_for('services') }}" class="btn btn-ghost">查看业务线 →</a>
+        <a href="{{ url_for('contact') }}" class="btn btn-primary" data-cms="hero.cta_primary">立即咨询</a>
+        <a href="{{ url_for('services') }}" class="btn btn-ghost" data-cms="hero.cta_secondary">查看业务线 →</a>
       </div>
       <div class="hero-stats">
-        <div><strong>8+</strong><span>年深耕</span></div>
-        <div><strong>120+</strong><span>交付项目</span></div>
-        <div><strong>30+</strong><span>行业覆盖</span></div>
-        <div><strong>99.2%</strong><span>客户续约率</span></div>
+        <div><strong data-cms="hero.stat_years">8+</strong><span data-cms="hero.stat_years_label">年深耕</span></div>
+        <div><strong data-cms="hero.stat_projects">120+</strong><span data-cms="hero.stat_projects_label">交付项目</span></div>
+        <div><strong data-cms="hero.stat_industries">30+</strong><span data-cms="hero.stat_industries_label">行业覆盖</span></div>
+        <div><strong data-cms="hero.stat_retention">99.2%</strong><span data-cms="hero.stat_retention_label">客户续约率</span></div>
       </div>
     </div>
     <div class="hero-panel">
@@ -40,15 +40,15 @@
 <section class="section">
   <div class="container">
     <div class="section-head">
-      <h2>四大业务线</h2>
-      <p>从 Web 到桌面，从 App 到 AI，一站式技术伙伴</p>
+      <h2 data-cms="index.services_title">四大业务线</h2>
+      <p data-cms="index.services_sub">从 Web 到桌面，从 App 到 AI，一站式技术伙伴</p>
     </div>
     <div class="grid grid-4">
       {% for s in services %}
         <a class="card svc-card" href="{{ url_for('service_detail', sid=s.id) }}">
           <div class="svc-icon">{{ s.icon }}</div>
-          <h3>{{ s.title }}</h3>
-          <p>{{ s.desc }}</p>
+          <h3 data-cms="services.{{ s.id }}.title">{{ s.title }}</h3>
+          <p data-cms="services.{{ s.id }}.desc">{{ s.desc }}</p>
           <div class="chips">
             {% for it in s.list[:3] %}<span class="chip">{{ it }}</span>{% endfor %}
           </div>
@@ -63,8 +63,8 @@
 <section class="section section-alt">
   <div class="container">
     <div class="section-head">
-      <h2>交付流程</h2>
-      <p>透明、可追踪、每两周一个可演示节点</p>
+      <h2 data-cms="index.process_title">交付流程</h2>
+      <p data-cms="index.process_sub">透明、可追踪、每两周一个可演示节点</p>
     </div>
     <div class="process">
       {% for p in process %}
@@ -82,8 +82,8 @@
 <section class="section">
   <div class="container">
     <div class="section-head">
-      <h2>客户与成果</h2>
-      <p>真实行业，真实结果</p>
+      <h2 data-cms="index.clients_title">客户与成果</h2>
+      <p data-cms="index.clients_sub">真实行业，真实结果</p>
     </div>
     <div class="grid grid-4">
       {% for c in clients %}
@@ -101,10 +101,10 @@
 <section class="section cta-band">
   <div class="container cta-inner">
     <div>
-      <h2>有想法？我们帮你落地。</h2>
-      <p>留下需求，1 个工作日内 1 对 1 沟通，输出可执行方案。</p>
+      <h2 data-cms="cta.title">有想法？我们帮你落地。</h2>
+      <p data-cms="cta.subtitle">留下需求，1 个工作日内 1 对 1 沟通，输出可执行方案。</p>
     </div>
-    <a href="{{ url_for('contact') }}" class="btn btn-light">提交需求 →</a>
+    <a href="{{ url_for('contact') }}" class="btn btn-light" data-cms="cta.button">提交需求 →</a>
   </div>
 </section>
 {% endblock %}
