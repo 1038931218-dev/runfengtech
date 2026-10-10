@@ -1,13 +1,8 @@
-# 润锋科技官网 — Supabase 一次性初始化脚本
-# 使用方法：
-#   1. 登录 supabase.com → 进入你的项目
-#   2. 左侧 SQL Editor → New query → 把本文件全部内容粘贴进去 → Run
-#   3. 完成后关闭并删除本次查询即可
-#
-# 注意：管理员邮箱固定为 262633158@qq.com。
-#       如果想用别的邮箱做管理员，把下面两处的邮箱都替换掉再运行。
+-- 润锋科技官网 — Supabase 一次性初始化脚本
+-- 使用方法：SQL Editor -> New query -> 粘贴全部 -> Run
+-- 注意：管理员邮箱固定为 262633158@qq.com，想换就替换下面两处邮箱
 
--- 0. 确保扩展存在（免费层内置，保险起见）
+-- 0. 确保扩展存在
 create extension if not exists pgcrypto;
 
 -- 1. 表单留言表
@@ -25,25 +20,25 @@ create table if not exists public.messages (
 
 alter table public.messages enable row level security;
 
--- 2. 匿名访问者可提交表单（官网访客无需登录）
+-- 2. 匿名可插入（官网访客）
 create policy "messages_anon_insert"
   on public.messages for insert
   to anon, authenticated
   with check (true);
 
--- 3. 仅管理员邮箱（已登录）可读取
+-- 3. 仅管理员可读
 create policy "messages_admin_read"
   on public.messages for select
   to authenticated
   using (auth.jwt() ->> 'email' = '262633158@qq.com');
 
--- 4. 仅管理员可标记已读
+-- 4. 仅管理员可改（标记已读）
 create policy "messages_admin_update"
   on public.messages for update
   to authenticated
   using (auth.jwt() ->> 'email' = '262633158@qq.com');
 
--- 5. 仅管理员可删除
+-- 5. 仅管理员可删
 create policy "messages_admin_delete"
   on public.messages for delete
   to authenticated
