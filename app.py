@@ -281,6 +281,11 @@ def build_static():
         p = os.path.join(static_root, fn)
         if os.path.isfile(p):
             shutil.copy2(p, os.path.join(static_dst, fn))
+    # robots.txt / sitemap.xml 在 build 根目录（网站路由 /robots.txt 是根路径）
+    for fn in ('robots.txt', 'sitemap.xml'):
+        src = os.path.join(static_root, fn)
+        if os.path.exists(src):
+            shutil.copy2(src, os.path.join(out_dir, fn))
     log.info('static assets copied to build/static/')
 
     print(f'\nStatic build complete. Files in {out_dir}:')
