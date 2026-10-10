@@ -63,13 +63,14 @@
   form.addEventListener('submit', async function (e) {
     e.preventDefault();
 
+    var fd = new FormData(form);
     var data = {
-      name: form.name.value.trim(),
-      company: form.company ? form.company.value.trim() : '',
-      phone: form.phone.value.trim(),
-      email: form.email.value.trim(),
-      service: form.service.value,
-      message: form.message.value.trim(),
+      name: (fd.get('name') || '').trim(),
+      company: (fd.get('company') || '').trim(),
+      phone: (fd.get('phone') || '').trim(),
+      email: (fd.get('email') || '').trim(),
+      service: fd.get('service') || '',
+      message: (fd.get('message') || '').trim(),
     };
 
     // 基本校验（与 main.js 一致）
