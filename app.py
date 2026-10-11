@@ -188,9 +188,12 @@ def contact():
             errors.append('请至少填写一个联系方式（电话或邮箱）')
         if not message:
             errors.append('请描述您的需求')
-        if re.match(r'^1[3-9]\d{9}$', phone) is None and phone:
-            errors.append('手机号格式不正确')
-        if '@' in email and len(email.split('@')[0]) < 1:
+        # 手机号：若填写，需为 11 位 1 开头（允许带横线的格式先去掉再判）
+        if phone:
+            phone_digits = re.sub(r'[\s\-]', '', phone)
+            if not re.match(r'^1[3-9]\d{9}$', phone_digits):
+                errors.append('手机号格式不正确（应为 11 位、1 开头）')
+        if email and not re.match(r'^[^\s@]+@[^\s@]+\.[^\s@]+$', email):
             errors.append('邮箱格式不正确')
 
         if errors:
