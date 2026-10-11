@@ -4,10 +4,16 @@
 {% block head %}
 <style>
   /* ===== 专业后台布局：左侧导航 + 内容区 ===== */
-  .admin-layout { display: grid; grid-template-columns: 230px 1fr; min-height: calc(100vh - 200px); }
+  /* 后台页隐藏官网的 header / footer，让它独占整屏 */
+  #admin-root .site-header, #admin-root .site-footer { display: none !important; }
+  /* 登录/未配置视图：居中卡片，占满视口 */
+  #admin-root > .login-wrap { min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 24px; box-sizing: border-box; }
+  /* 主界面：左固定侧栏 + 右内容区，两列铺满整屏高度 */
+  .admin-layout { display: grid; grid-template-columns: 230px 1fr; min-height: 100vh; }
   .admin-side {
     background: #0f1728; color: #cbd5e1; padding: 24px 0;
     display: flex; flex-direction: column;
+    position: sticky; top: 0; height: 100vh; overflow-y: auto;
   }
   .admin-side .side-brand {
     display: flex; align-items: center; gap: 10px;
@@ -27,7 +33,7 @@
   .admin-side .side-foot a { color: #64748b; font-size: .8rem; text-decoration: none; }
   .admin-side .side-foot a:hover { color: #cbd5e1; }
 
-  .admin-main { padding: 28px 32px; background: var(--bg-alt); }
+  .admin-main { padding: 28px 32px; background: var(--bg-alt); min-height: 100vh; overflow-x: hidden; }
   .admin-main h2.tab-title { margin: 0 0 4px; font-size: 1.25rem; }
   .admin-main .tab-desc { color: var(--muted); font-size: .88rem; margin-bottom: 22px; }
 
@@ -80,19 +86,20 @@
   .login-wrap { max-width: 420px; margin: 40px auto; }
 
   @media (max-width: 860px) {
-    .admin-layout { grid-template-columns: 1fr; }
-    .admin-side { flex-direction: row; flex-wrap: wrap; padding: 12px; }
+    .admin-layout { grid-template-columns: 1fr; min-height: 0; }
+    .admin-side { position: static; height: auto; flex-direction: row; flex-wrap: wrap; padding: 12px; }
     .admin-side .side-brand { border: none; padding: 0 8px; }
     .admin-side nav { display: flex; flex-wrap: wrap; }
     .admin-side nav a { border-left: none; border-bottom: 3px solid transparent; }
     .admin-side .side-foot { margin: 0; padding: 0 8px; border: none; }
+    .admin-main { min-height: 0; }
     .stat-row { grid-template-columns: repeat(2, 1fr); }
   }
 </style>
 {% endblock %}
 
 {% block content %}
-<div class="admin-layout" id="admin-root">
+<div id="admin-root">
 
   <!-- 未配置 / 登录视图 -->
   <div class="login-wrap admin-card" id="view-unconfigured" style="display:none">
@@ -109,10 +116,9 @@
     <button class="btn btn-primary btn-block" id="login-btn">登 录</button>
   </div>
 
-  <!-- 主界面 -->
-  <div class="admin-layout-inner" id="view-app" style="display:none">
-    <div class="admin-layout">
-      <aside class="admin-side">
+  <!-- 主界面：登录后独占整屏，左侧固定侧栏 + 右侧内容区 -->
+  <div class="admin-layout" id="view-app" style="display:none">
+    <aside class="admin-side">
         <div class="side-brand">
           <img src="{{ url_for('static', filename='logo-a.svg') }}" alt="logo" />
           <div class="t">管理后台<small>{{ site.name }}</small></div>
@@ -339,7 +345,6 @@
         </section>
 
       </main>
-    </div>
   </div>
 </div>
 
