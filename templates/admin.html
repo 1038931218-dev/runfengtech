@@ -4,8 +4,8 @@
 {% block head %}
 <style>
   /* ===== 专业后台布局：左侧导航 + 内容区 ===== */
-  /* 后台页隐藏官网的 header / footer，让它独占整屏 */
-  #admin-root .site-header, #admin-root .site-footer { display: none !important; }
+  /* 后台独占整屏 */
+  html, body { height: 100%; }
   /* 登录/未配置视图：居中卡片，占满视口 */
   #admin-root > .login-wrap { min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 24px; box-sizing: border-box; }
   /* 主界面：左固定侧栏 + 右内容区，两列铺满整屏高度 */

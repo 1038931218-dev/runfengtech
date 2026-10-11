@@ -10,7 +10,8 @@
   {% block head %}{% endblock %}
 </head>
 <body>
-  <!-- 顶部导航 -->
+  {% if request.endpoint != 'admin' %}
+  <!-- 顶部导航（后台页不渲染） -->
   <header class="site-header">
     <div class="container nav-wrap">
       <a class="brand" href="{{ url_for('index') }}">
@@ -26,6 +27,7 @@
       <button class="nav-toggle" aria-label="菜单" onclick="document.querySelector('.nav').classList.toggle('open')">☰</button>
     </div>
   </header>
+  {% endif %}
 
   <main>
     {% with messages = get_flashed_messages(with_categories=true) %}
@@ -40,7 +42,8 @@
     {% block content %}{% endblock %}
   </main>
 
-  <!-- 底部 -->
+  {% if request.endpoint != 'admin' %}
+  <!-- 底部（后台页不渲染） -->
   <footer class="site-footer">
     <div class="container footer-grid">
       <div class="footer-col">
@@ -77,6 +80,7 @@
       </div>
     </div>
   </footer>
+  {% endif %}
 
   <script src="{{ url_for('static', filename='js/supabase-config.js') }}"></script>
   <script src="{{ url_for('static', filename='js/cms.js') }}"></script>
