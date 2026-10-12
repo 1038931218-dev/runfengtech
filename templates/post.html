@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+{% block title %}{{ post.title }} — {{ site.name }}{% endblock %}
+{% block description %}{{ post.excerpt }}{% endblock %}
+
+{% block content %}
+<section class="page-head">
+  <div class="container">
+    <span class="tag">{{ post.cat }}</span>
+    <h1>{{ post.title }}</h1>
+    <p class="lead muted small">📅 {{ post.date }} · ⏱ 约 {{ post.read }} 分钟 · 作者：{{ site.name }} 研发团队</p>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container article-body">
+    {{ post.html | safe }}
+  </div>
+</section>
+
+<section class="section cta-band">
+  <div class="container cta-inner">
+    <div>
+      <h2>这篇文章对你有帮助？</h2>
+      <p>把你的真实场景丢给我们，1 个工作日内出可执行方案。</p>
+    </div>
+    <a href="{{ url_for('contact') }}" class="btn btn-light">免费咨询 →</a>
+  </div>
+</section>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "{{ post.title }}",
+  "description": "{{ post.excerpt }}",
+  "datePublished": "{{ post.iso }}",
+  "author": {"@type": "Organization", "name": "{{ site.name }}"},
+  "publisher": {"@type": "Organization", "name": "{{ site.name }}"}
+}
+</script>
+{% endblock %}

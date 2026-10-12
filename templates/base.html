@@ -7,6 +7,7 @@
   <meta name="description" data-cms-content="general.description" content="{% block description %}{{ site.name }}专注网站开发、Windows 软件、手机 APP 开发与 AI 部署，为企业提供端到端的技术解决方案。{% endblock %}" />
   <link rel="icon" href="{{ url_for('static', filename='favicon.svg') }}" type="image/svg+xml" />
   <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" />
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/blog.css') }}" />
   {% block head %}{% endblock %}
 </head>
 <body>
@@ -22,11 +23,49 @@
         <a href="{{ url_for('index') }}" class="{{ 'active' if request.endpoint == 'index' }}">首页</a>
         <a href="{{ url_for('services') }}" class="{{ 'active' if request.endpoint in ('services','service_detail') }}">业务线</a>
         <a href="{{ url_for('about') }}" class="{{ 'active' if request.endpoint == 'about' }}">关于我们</a>
+        <a href="{{ url_for('blog') }}" class="{{ 'active' if request.endpoint in ('blog','post') }}">博客</a>
+        <a href="{{ url_for('faq') }}" class="{{ 'active' if request.endpoint == 'faq' }}">FAQ</a>
         <a href="{{ url_for('contact') }}" class="nav-cta {{ 'active' if request.endpoint == 'contact' }}">联系我们</a>
       </nav>
       <button class="nav-toggle" aria-label="菜单" onclick="document.querySelector('.nav').classList.toggle('open')">☰</button>
     </div>
   </header>
+  {% endif %}
+
+  <!-- 主题切换按钮（仅官网页） -->
+  {% if request.endpoint != 'admin' %}
+  <button class="theme-toggle" id="theme-toggle" aria-label="切换深色模式" title="切换深色模式">🌙</button>
+  <script>
+  (function () {
+    var KEY = 'rf_theme';
+    var html = document.documentElement;
+    var stored = null;
+    try { stored = localStorage.getItem(KEY); } catch (e) {}
+    if (stored === 'dark' || stored === 'light' || stored === 'auto') {
+      html.setAttribute('data-theme', stored);
+    } else {
+      html.setAttribute('data-theme', 'auto');
+    }
+    var btn = document.getElementById('theme-toggle');
+    function syncIcon() {
+      var t = html.getAttribute('data-theme');
+      var isDark = t === 'dark' || (t === 'auto' && window.matchMedia('(prefers-color-scheme: dark)').matches);
+      if (btn) btn.textContent = isDark ? '☀️' : '🌙';
+    }
+    syncIcon();
+    if (btn) btn.addEventListener('click', function () {
+      var cur = html.getAttribute('data-theme');
+      var isDark = cur === 'dark' || (cur === 'auto' && window.matchMedia('(prefers-color-scheme: dark)').matches);
+      var next = isDark ? 'light' : 'dark';
+      html.setAttribute('data-theme', next);
+      try { localStorage.setItem(KEY, next); } catch (e) {}
+      syncIcon();
+    });
+    window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', function () {
+      if (html.getAttribute('data-theme') === 'auto') syncIcon();
+    });
+  })();
+  </script>
   {% endif %}
 
   <main>
@@ -70,6 +109,7 @@
           <li><a href="{{ url_for('service_detail', sid='windows') }}">Windows 软件</a></li>
           <li><a href="{{ url_for('service_detail', sid='app') }}">手机 APP 开发</a></li>
           <li><a href="{{ url_for('service_detail', sid='ai') }}">AI 部署</a></li>
+          <li><a href="{{ url_for('faq') }}">常见问题</a></li>
         </ul>
       </div>
     </div>
@@ -82,10 +122,37 @@
   </footer>
   {% endif %}
 
+  <!-- 在线客服悬浮按钮（后台页不渲染） -->
+  {% if request.endpoint != 'admin' %}
+  <div class="cs-fab-wrap">
+    <div class="cs-panel" id="cs-panel" hidden>
+      <div class="cs-panel-head">
+        <span class="cs-title">需要帮助？</span>
+        <button class="cs-close" id="cs-close" aria-label="关闭">✕</button>
+      </div>
+      <div class="cs-panel-body">
+        <a class="cs-opt" href="tel:{{ site.phone | replace('-', '') }}">
+          <span class="cs-opt-ico">📞</span>
+          <span class="cs-opt-main"><strong>电话咨询</strong><small>{{ site.phone }}</small></span>
+        </a>
+        <a class="cs-opt" href="mailto:{{ site.email }}">
+          <span class="cs-opt-ico">✉️</span>
+          <span class="cs-opt-main"><strong>邮件联系</strong><small>{{ site.email }}</small></span>
+        </a>
+        <a class="cs-opt" href="{{ url_for('contact') }}">
+          <span class="cs-opt-ico">📝</span>
+          <span class="cs-opt-main"><strong>在线表单</strong><small>1 个工作日内回复</small></span>
+        </a>
+      </div>
+    </div>
+    <button class="cs-fab" id="cs-fab" aria-label="在线客服">💬</button>
+  </div>
+  <script src="{{ url_for('static', filename='js/live-chat.js') }}"></script>
+  {% endif %}
+
   <script src="{{ url_for('static', filename='js/supabase-config.js') }}"></script>
   <script src="{{ url_for('static', filename='js/cms.js') }}"></script>
   <script src="{{ url_for('static', filename='js/main.js') }}"></script>
   <script src="{{ url_for('static', filename='js/contact-api.js') }}"></script>
-  <script src="{{ url_for('static', filename='js/admin.js') }}"></script>
-</body>
+  <script src="{{ url_for('static', filename='js/admin.js') }}"></script></body>
 </html>

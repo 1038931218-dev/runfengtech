@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+{% block title %}技术博客 — {{ site.name }}{% endblock %}
+{% block description %}润锋科技技术博客：网站开发、Windows 软件、手机 APP 与 AI 部署的实战经验、技术选型与避坑指南。{% endblock %}
+
+{% block content %}
+<section class="page-head">
+  <div class="container">
+    <span class="tag">技术博客</span>
+    <h1 data-cms="blog.title">技术博客</h1>
+    <p data-cms="blog.subtitle" class="lead">来自一线交付的工程经验、选型判断与避坑指南，持续更新。</p>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <div class="grid grid-2 blog-grid">
+      {% for b in posts %}
+      <a class="card blog-card" href="{{ b.href }}">
+        <span class="blog-cat">{{ b.cat }}</span>
+        <h3>{{ b.title }}</h3>
+        <p class="blog-excerpt">{{ b.excerpt }}</p>
+        <div class="blog-meta">
+          <span>📅 {{ b.date }}</span>
+          <span>⏱ 约 {{ b.read }} 分钟</span>
+        </div>
+      </a>
+      {% endfor %}
+    </div>
+
+    <div class="blog-cta card" style="margin-top:36px">
+      <h3>想看看我们怎么落地？</h3>
+      <p class="muted">每一篇博客背后都是一个真实项目。把你的场景告诉我们，我们给到能跑的方案。</p>
+      <a class="btn btn-primary" href="{{ url_for('contact') }}">免费咨询 →</a>
+    </div>
+  </div>
+</section>
+
+<!-- Blog 结构化数据（SEO） -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Blog",
+  "name": "{{ site.name }} 技术博客",
+  "url": "https://homesmartlab.com/blog",
+  "blogPost": [
+    {% for b in posts %}
+    {"@type":"BlogPosting","headline":"{{ b.title }}","datePublished":"{{ b.iso }}","author":{"@type":"Organization","name":"{{ site.name }}"}}{% if not loop.last %},{% endif %}
+    {% endfor %}
+  ]
+}
+</script>
+{% endblock %}

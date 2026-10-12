@@ -1,0 +1,62 @@
+{% extends 'base.html' %}
+{% block title %}常见问题 FAQ — {{ site.name }}{% endblock %}
+{% block description %}润锋科技常见问题解答：报价周期、技术栈、交付标准、售后 SLA 等。{% endblock %}
+
+{% block content %}
+<section class="page-head">
+  <div class="container">
+    <span class="tag">常见问题</span>
+    <h1 data-cms="faq.title">常见问题</h1>
+    <p data-cms="faq.subtitle" class="lead">关于报价、周期、技术栈与售后的最关心问题，一次说清。</p>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container faq-grid">
+    <div class="faq-list">
+      {% for f in faqs %}
+      <details class="faq-item">
+        <summary>
+          <span class="faq-q">{{ f.q }}</span>
+          <span class="faq-icon">＋</span>
+        </summary>
+        <div class="faq-a">{{ f.a }}</div>
+      </details>
+      {% endfor %}
+    </div>
+
+    <aside class="faq-side">
+      <div class="card">
+        <h3>没找到答案？</h3>
+        <p class="muted">直接告诉我们你的场景，1 个工作日内 1 对 1 回复。</p>
+        <a class="btn btn-primary btn-block" href="{{ url_for('contact') }}">提交咨询 →</a>
+      </div>
+      <div class="card">
+        <h3>快速联系</h3>
+        <ul class="dotlist">
+          <li>电话：{{ site.phone }}</li>
+          <li>邮箱：{{ site.email }}</li>
+          <li>地址：{{ site.address }}</li>
+        </ul>
+      </div>
+    </aside>
+  </div>
+</section>
+
+<!-- FAQPage 结构化数据（SEO） -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {% for f in faqs %}
+    {
+      "@type": "Question",
+      "name": "{{ f.q }}",
+      "acceptedAnswer": {"@type": "Answer", "text": "{{ f.a }}"}
+    }{% if not loop.last %},{% endif %}
+    {% endfor %}
+  ]
+}
+</script>
+{% endblock %}

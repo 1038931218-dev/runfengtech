@@ -91,6 +91,100 @@ CLIENTS = [
     {'name': '某医疗机构', 'domain': '医疗', 'desc': 'AI 辅助诊断小程序，覆盖 3 家分院'},
 ]
 
+# 技术博客（静态种子文章，SEO 长尾词覆盖）
+BLOG_POSTS = [
+    {
+        'slug': 'website-cms-stack',
+        'cat': '网站开发',
+        'title': '企业官网 2026 技术选型：为什么我们推荐「Flask + Supabase + GitHub Pages」轻架构',
+        'excerpt': '不是一定要堆 React + Node + AWS。大多数企业官网用「Flask 静态构建 + Supabase 做 CMS/留言 + GitHub Pages 托管」就能跑，成本近乎为零，改文案后台实时生效，还能加在线客服和深色模式。',
+        'date': '2026-10-12',
+        'iso': '2026-10-12',
+        'read': 6,
+        'html': (
+            '<h2>先说结论</h2>'
+            '<p>给「企业官网」选架构，目标只有三个：<strong>快、省、好维护</strong>。90% 的官网并不需要微服务、不需要 Kubernetes。真正值钱的是「后台能改内容、改完秒生效、访客体验顺」。</p>'
+            '<h2>三件套为什么搭</h2>'
+            '<ul>'
+            '<li><strong>Flask 静态构建</strong>：把页面渲染成纯 HTML 推到 GitHub Pages，托管免费、全球 CDN 快，不用交服务器月费。</li>'
+            '<li><strong>Supabase 做 CMS</strong>：一张 KV 表存文案、一张表存留言，前端直连 REST，后台改「标语」访客端实时刷新，不用重新部署。</li>'
+            '<li><strong>RLS 行级安全</strong>：匿名可读可写留言，仅管理员邮箱可改网站设置，权限用 SQL 策略锁死，不靠应用层自觉。</li>'
+            '</ul>'
+            '<h2>踩过的坑</h2>'
+            '<p>1）表单在静态托管下没有后端，别用 <code>method="post"</code>，交给前端 JS 直连 Supabase。<br>'
+            '2）官网后台千万别套用官网的 header/footer，否则「管理界面」会冒出导航条和页脚，视觉很乱。<br>'
+            '3）深色模式用 CSS 变量 + <code>prefers-color-scheme</code>，别写两套 HTML。</p>'
+            '<h2>适合谁</h2>'
+            '<p>中小官网、产品落地页、技术型公司对外形象站。要复杂业务逻辑的 SaaS，再上完整前后端不迟。</p>'
+        ),
+    },
+    {
+        'slug': 'windows-cs-qt-choice',
+        'cat': 'Windows 软件',
+        'title': 'C#/.NET 8 还是 C++/Qt？桌面端选型决策表（行业定制场景）',
+        'excerpt': '「做内网办公系统 / MES 桌面端」时技术栈怎么选？用交付成本、团队、性能三张表一次讲清，并给出我们给客户做行业定制的默认推荐。',
+        'date': '2026-10-11',
+        'iso': '2026-10-11',
+        'read': 7,
+        'html': (
+            '<h2>一句话结论</h2>'
+            '<p>大多数「内网业务系统、桌面工具、数据可视化」选 <strong>C#/.NET 8 + WPF</strong>；涉及高性能渲染、插件热插拔、跨进程通信再上 <strong>C++/Qt</strong>。两者不是对立，常在同一产品里共存。</p>'
+            '<h2>决策表</h2>'
+            '<ul>'
+            '<li><strong>团队</strong>：.NET 招聘池大、上手快；C++/Qt 工程师贵、培养周期长。</li>'
+            '<li><strong>交付成本</strong>：同类管理后台 .NET 通常比 C++ 快 30–50%。</li>'
+            '<li><strong>性能</strong>：常规 CRUD/报表 .NET 完全够；只有实时信号处理、工业控制才需要 C++。</li>'
+            '<li><strong>插件化</strong>：C++ 动态库插件机制更成熟，适合要留扩展口的产品。</li>'
+            '</ul>'
+            '<h2>我们的默认</h2>'
+            '<p>行业定制软件默认 C#/.NET 8 + WPF + SQLite/MySQL；客户点名 C++/Qt 或需要原生 Win32 性能时再切换，并在方案阶段写进合同。</p>'
+        ),
+    },
+    {
+        'slug': 'rag-knowledge-base',
+        'cat': 'AI 部署',
+        'title': 'RAG 知识库落地：从「能跑」到「可用」的关键 5 件事',
+        'excerpt': '很多 RAG 项目死在「召回质量」。讲清分块策略、向量库选型、重排、评测闭环，以及私有化部署时数据不出机房怎么做。',
+        'date': '2026-10-10',
+        'iso': '2026-10-10',
+        'read': 8,
+        'html': (
+            '<h2>「能跑」和「可用」的差距</h2>'
+            '<p>一个 demo 级 RAG 十分钟就能搭，但生产环境要扛住：召回不准、答非所问、幻觉、引用不可追溯。差距全在工程细节。</p>'
+            '<h2>关键 5 件</h2>'
+            '<ul>'
+            '<li><strong>分块</strong>：按语义切，别按 512 token 硬切；保留标题层级做上下文。</li>'
+            '<li><strong>召回 + 重排</strong>：向量粗排 top-50，再用 cross-encoder 精排 top-5，效果提升肉眼可见。</li>'
+            '<li><strong>向量库</strong>：中小规模用 pgvector 够（Supabase 就带），大规模再上专用引擎。</li>'
+            '<li><strong>引用可追溯</strong>：每个回答挂回原文 chunk，可点、可审计。</li>'
+            '<li><strong>评测闭环</strong>：建 200 条真实问答集，每次换模型/调分块都回归测 R@5。</li>'
+            '</ul>'
+            '<h2>私有化怎么做</h2>'
+            '<p>PyTorch + vLLM 本地推理，模型与语料全在你机房，数据不出内网，满足金融/医疗合规。</p>'
+        ),
+    },
+]
+
+# 常见问题（FAQ 页 + 结构化数据用）
+FAQS = [
+    {'q': '一个企业官网项目大概多久能上线？',
+     'a': '标准企业官网 2–4 周可交付上线：1 周需求与原型、2 周开发与联调、0.5 周测试与灰度发布。涉及 CMS、支付、多端同步的复杂项目周期相应延长，会在方案阶段给出明确节点表。'},
+    {'q': '怎么报价？有没有预算区间参考？',
+     'a': '按功能模块与人力投入报价，不做一口价。企业官网常见区间 3–15 万，桌面/APP 业务系统 8–50 万，AI 部署按算力与模型规模定制。我们会在 1 个工作日内给出分项报价单，无隐藏费用。'},
+    {'q': '交付物包含哪些？源码和文档给不给？',
+     'a': '100% 交付可运行源码、部署文档、接口文档、测试报告。代码支持你方技术团队直接接手，不做黑盒交付；关键模块附单元测试。'},
+    {'q': '支持二次开发与技术交接吗？',
+     'a': '支持。项目尾期提供 2 次 1 对 1 技术交接（代码走查 + 架构说明），并给 30 天免费答疑期，之后可选 SLA 长期陪跑。'},
+    {'q': '上线后出问题谁负责？有 SLA 吗？',
+     'a': '提供分级 SLA：常规缺陷 48h 内修复，线上故障 7×24 响应、4h 内出处理方案。SLA 违约按合同约定赔付。'},
+    {'q': '用 C#/.NET 或 C++/Qt 的 Windows 项目能做吗？',
+     'a': '可以做。团队 C#/.NET 8 与 C++/Qt 双栈，WPF/WinForms/Win32 API 均有商用交付案例，支持行业定制软件、内网办公系统、桌面工具。'},
+    {'q': 'AI 大模型部署支持私有化吗？数据会不会泄露？',
+     'a': '支持全私有化部署（本地 GPU 集群 / 边缘设备），数据不出你的机房。技术栈覆盖 PyTorch、vLLM、LangChain、RAG 知识库，从 PoC 到生产环境全程护航。'},
+    {'q': '可以先做一个小模块试点吗？',
+     'a': '可以。推荐以 2 周 PoC 起步：明确一个可演示的小闭环（如单个业务页面 / 一个接口 / 一个智能体），验证后再扩展，降低你的试错成本。'},
+]
+
 # ---------------------------------------------------------------------------
 # 页面路由
 # ---------------------------------------------------------------------------
@@ -171,6 +265,21 @@ def admin():
 @app.route('/about')
 def about():
     return render_template('about.html', site=SITE, process=PROCESS, clients=CLIENTS)
+
+@app.route('/faq')
+def faq():
+    return render_template('faq.html', site=SITE, faqs=FAQS)
+
+@app.route('/blog')
+def blog():
+    return render_template('blog.html', site=SITE, posts=BLOG_POSTS)
+
+@app.route('/blog/<slug>')
+def post(slug):
+    for p in BLOG_POSTS:
+        if p['slug'] == slug:
+            return render_template('post.html', site=SITE, post=p)
+    return redirect(url_for('blog'))
 
 @app.route('/contact', methods=['GET', 'POST'])
 def contact():
@@ -294,9 +403,17 @@ def build_static():
         ('/services/app', 'services/app/index.html'),
         ('/services/ai', 'services/ai/index.html'),
         ('/about', 'about/index.html'),
+        ('/faq', 'faq/index.html'),
+        ('/blog', 'blog/index.html'),
         ('/contact', 'contact/index.html'),
         ('/admin', 'admin/index.html'),
     ]
+    # 博客详情子页（动态追加）
+    for p in BLOG_POSTS:
+        pages.append(('/blog/' + p['slug'], 'blog/' + p['slug'] + '/index.html'))
+    # 博客详情子页
+    for p in BLOG_POSTS:
+        pages.append(('/blog/' + p['slug'], 'blog/' + p['slug'] + '/index.html'))
 
     # 构建路径前缀：
     #   绑自定义域名（homesmartlab.com）→ 空（路径从 / 开始）

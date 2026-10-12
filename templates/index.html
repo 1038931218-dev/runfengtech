@@ -1,5 +1,37 @@
 {% extends 'base.html' %}
 {% block title %}{{ site.name }} — 网站开发 · Windows 软件 · APP · AI 部署{% endblock %}
+{% block description %}润锋科技专注企业官网、Windows 桌面软件、手机 APP 与 AI 大模型部署，交付可验证、代码可继承、长期可陪跑。{% endblock %}
+
+{% block head %}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  "name": "{{ site.name }}",
+  "url": "https://homesmartlab.com",
+  "logo": "https://homesmartlab.com/static/logo-a.svg",
+  "description": "{{ site.slogan }}",
+  "contactPoint": [
+    {"@type": "ContactPoint", "telephone": "{{ site.phone | replace('-', '') }}", "contactType": "customer service"},
+    {"@type": "ContactPoint", "email": "{{ site.email }}", "contactType": "sales"}
+  ],
+  "address": {
+    "@type": "PostalAddress",
+    "streetAddress": "{{ site.address }}",
+    "addressCountry": "CN"
+  },
+  "sameAs": []
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "name": "{{ site.name }}",
+  "url": "https://homesmartlab.com"
+}
+</script>
+{% endblock %}
 
 {% block content %}
 <!-- Hero -->
