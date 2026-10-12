@@ -1,6 +1,6 @@
 # 润锋科技 官网
 
-基于 **Flask** 的轻量企业官网。业务线：网站开发 / Windows 软件 / 手机 APP 开发 / AI 部署。
+基于 **Flask** 的轻量企业官网。业务线：AI 智能应用 / 企业官网与落地页 / 数据与自动化 / 内容与营销。
 
 ## 目录结构
 
@@ -36,7 +36,7 @@ python app.py
 |---|---|
 | `/` | 首页 |
 | `/services` | 业务线列表 |
-| `/services/<id>` | 单业务线详情（web / windows / app / ai） |
+| `/services/<id>` | 单业务线详情（ai-agent / web / data-automation / ai-content） |
 | `/about` | 关于我们 |
 | `/contact` | 联系表单（GET）/ 提交（POST），提交存到 `data/messages/*.json` |
 | `/api/health` | 健康检查 |

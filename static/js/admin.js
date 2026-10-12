@@ -230,7 +230,7 @@
   });
 
   // ---------------- 留言管理 ----------------
-  var SVC = { web: '网站开发', windows: 'Windows 软件', app: '手机 APP', ai: 'AI 部署', other: '其他' };
+  var SVC = { 'ai-agent': 'AI 智能应用', web: '企业官网与落地页', 'data-automation': '数据与自动化', 'ai-content': '内容与营销', other: '其他' };
 
   async function loadMessages() {
     try {

@@ -40,39 +40,39 @@ SITE = {
     'year': '2026',
 }
 
-# 业务线
+# 业务线（围绕 AI 能力核心定位）
 SERVICES = [
+    {
+        'id': 'ai-agent',
+        'icon': '🤖',
+        'title': 'AI 智能应用',
+        'desc': '以大模型为引擎，帮你把 AI 真正落到业务里：智能体、知识库、自动化问答，从原型到上线。',
+        'list': ['AI 智能体 / Agent', 'RAG 知识库问答', '大模型私有化部署', 'AI 客服 / 售前问答', '智能写作 / 内容生成', '多模态理解（图文）'],
+        'tech': ['OpenAI / Claude / 国产大模型', 'LangChain / LlamaIndex', 'RAG + 向量检索', 'Prompt 工程', 'vLLM / ONNX 推理'],
+    },
     {
         'id': 'web',
         'icon': '🌐',
-        'title': '网站开发',
-        'desc': '从企业官网到 SaaS 平台，覆盖前端、后端、小程序、SEO 与性能优化。',
-        'list': ['企业官网', '电商系统', 'SaaS 平台', '小程序开发', 'H5 活动页', 'SEO 优化'],
-        'tech': ['React / Vue', 'Python / Node.js', 'MySQL / PostgreSQL', 'Redis', 'Nginx / Docker'],
+        'title': '企业官网与落地页',
+        'desc': '从企业官网到产品落地页，AI 辅助生成内容、自动 SEO 优化，交付可维护、可实时改文案的网站。',
+        'list': ['企业官网', '产品落地页 / 转化页', 'H5 活动页', '博客 / 资讯站', 'SEO 与结构化数据', '多语言国际化'],
+        'tech': ['Flask / 静态构建', 'GitHub Pages 托管', 'Supabase 做 CMS', 'JSON-LD 结构化数据', 'CSS 深色模式', '中英 i18n'],
     },
     {
-        'id': 'windows',
-        'icon': '🖥️',
-        'title': 'Windows 软件',
-        'desc': '桌面端业务系统、工具类软件、行业定制软件，C#/.NET 与 C++/Qt 双栈。',
-        'list': ['行业定制软件', '桌面工具', '数据可视化', '内网办公系统', '插件开发', '自动化脚本'],
-        'tech': ['C# / .NET 8', 'C++ / Qt', 'WPF / WinForms', 'Win32 API', 'MySQL / SQLite'],
+        'id': 'data-automation',
+        'icon': '📊',
+        'title': '数据与自动化',
+        'desc': '把重复劳动交给脚本和 AI：数据爬取清洗、报表自动化、办公流自动化，省时省力。',
+        'list': ['数据爬取与清洗', 'Excel / 报表自动化', '办公流自动化', '爬虫监控 / 竞品追踪', '数据可视化看板', 'API 对接与集成'],
+        'tech': ['Python / Pandas', 'Scrapy / 请求采集', 'Office 自动化', '定时任务 / 触发器', 'SQLite / PostgreSQL', 'Webhook / API'],
     },
     {
-        'id': 'app',
-        'icon': '📱',
-        'title': '手机 APP 开发',
-        'desc': 'iOS / Android / 跨端应用，覆盖产品、UI、研发、上架全流程。',
-        'list': ['原生 iOS / Android', 'Flutter / React Native', '小程序跨端', 'App 上架', '热更新', '用户增长'],
-        'tech': ['Swift', 'Kotlin', 'Flutter', 'React Native', 'Firebase / 极光推送'],
-    },
-    {
-        'id': 'ai',
-        'icon': '🤖',
-        'title': 'AI 部署',
-        'desc': '大模型落地、RAG、智能体、推理服务与边缘计算，从 PoC 到生产环境。',
-        'list': ['大模型私有化部署', 'RAG 知识库', 'AI 智能体', '推理服务优化', '边缘 AI', '模型微调'],
-        'tech': ['PyTorch / vLLM', 'LangChain', 'Docker / K8s', 'GPU 集群', 'ONNX / TensorRT'],
+        'id': 'ai-content',
+        'icon': '✍️',
+        'title': '内容与营销',
+        'desc': '用 AI 生产高质量内容：文案、SEO 文章、多语言翻译、营销素材，持续为品牌造势。',
+        'list': ['品牌 / 产品文案', 'SEO 长尾词文章', '多语言翻译与本地化', '营销素材生成', '社媒内容运营', '品牌视觉一致性'],
+        'tech': ['大模型文案', 'SEO 关键词策略', '多语言 i18n', '图文素材生成', '内容日历 / 排期', 'A/B 文案实验'],
     },
 ]
 
@@ -85,17 +85,17 @@ PROCESS = [
 ]
 
 CLIENTS = [
-    {'name': '某连锁零售集团', 'domain': '零售', 'desc': '电商中台重构，GMV 提升 38%'},
-    {'name': '某制造上市公司', 'domain': '制造', 'desc': 'MES 桌面端 + 移动端一体化'},
-    {'name': '某新能源车企', 'domain': '汽车', 'desc': '内部 AI 知识库，研发效率提升 25%'},
-    {'name': '某医疗机构', 'domain': '医疗', 'desc': 'AI 辅助诊断小程序，覆盖 3 家分院'},
+    {'name': '某连锁零售集团', 'domain': '零售', 'desc': '官网 + AI 售前问答上线，咨询转化率提升 38%'},
+    {'name': '某 SaaS 公司', 'domain': '科技', 'desc': 'AI 客服智能体 + 多语言官网，海外客户占比翻倍'},
+    {'name': '某新能源车企', 'domain': '汽车', 'desc': '内部 AI 知识库 + 数据自动化报表，研发效率提升 25%'},
+    {'name': '某教育机构', 'domain': '教育', 'desc': 'AI 内容生产系统 + 官网 SEO，自然流量月增 3 倍'},
 ]
 
 # 技术博客（静态种子文章，SEO 长尾词覆盖）
 BLOG_POSTS = [
     {
         'slug': 'website-cms-stack',
-        'cat': '网站开发',
+        'cat': '企业官网',
         'title': '企业官网 2026 技术选型：为什么我们推荐「Flask + Supabase + GitHub Pages」轻架构',
         'excerpt': '不是一定要堆 React + Node + AWS。大多数企业官网用「Flask 静态构建 + Supabase 做 CMS/留言 + GitHub Pages 托管」就能跑，成本近乎为零，改文案后台实时生效，还能加在线客服和深色模式。',
         'date': '2026-10-12',
@@ -119,30 +119,8 @@ BLOG_POSTS = [
         ),
     },
     {
-        'slug': 'windows-cs-qt-choice',
-        'cat': 'Windows 软件',
-        'title': 'C#/.NET 8 还是 C++/Qt？桌面端选型决策表（行业定制场景）',
-        'excerpt': '「做内网办公系统 / MES 桌面端」时技术栈怎么选？用交付成本、团队、性能三张表一次讲清，并给出我们给客户做行业定制的默认推荐。',
-        'date': '2026-10-11',
-        'iso': '2026-10-11',
-        'read': 7,
-        'html': (
-            '<h2>一句话结论</h2>'
-            '<p>大多数「内网业务系统、桌面工具、数据可视化」选 <strong>C#/.NET 8 + WPF</strong>；涉及高性能渲染、插件热插拔、跨进程通信再上 <strong>C++/Qt</strong>。两者不是对立，常在同一产品里共存。</p>'
-            '<h2>决策表</h2>'
-            '<ul>'
-            '<li><strong>团队</strong>：.NET 招聘池大、上手快；C++/Qt 工程师贵、培养周期长。</li>'
-            '<li><strong>交付成本</strong>：同类管理后台 .NET 通常比 C++ 快 30–50%。</li>'
-            '<li><strong>性能</strong>：常规 CRUD/报表 .NET 完全够；只有实时信号处理、工业控制才需要 C++。</li>'
-            '<li><strong>插件化</strong>：C++ 动态库插件机制更成熟，适合要留扩展口的产品。</li>'
-            '</ul>'
-            '<h2>我们的默认</h2>'
-            '<p>行业定制软件默认 C#/.NET 8 + WPF + SQLite/MySQL；客户点名 C++/Qt 或需要原生 Win32 性能时再切换，并在方案阶段写进合同。</p>'
-        ),
-    },
-    {
         'slug': 'rag-knowledge-base',
-        'cat': 'AI 部署',
+        'cat': 'AI 智能应用',
         'title': 'RAG 知识库落地：从「能跑」到「可用」的关键 5 件事',
         'excerpt': '很多 RAG 项目死在「召回质量」。讲清分块策略、向量库选型、重排、评测闭环，以及私有化部署时数据不出机房怎么做。',
         'date': '2026-10-10',
@@ -160,7 +138,28 @@ BLOG_POSTS = [
             '<li><strong>评测闭环</strong>：建 200 条真实问答集，每次换模型/调分块都回归测 R@5。</li>'
             '</ul>'
             '<h2>私有化怎么做</h2>'
-            '<p>PyTorch + vLLM 本地推理，模型与语料全在你机房，数据不出内网，满足金融/医疗合规。</p>'
+            '<p>vLLM 本地推理，模型与语料全在你机房，数据不出内网，满足金融/医疗合规。</p>'
+        ),
+    },
+    {
+        'slug': 'ai-content-workflow',
+        'cat': '内容与营销',
+        'title': '用 AI 做内容营销：从「一次性文案」到「持续生产系统」',
+        'excerpt': 'AI 写文案的坑不在「能不能写」，而在「写得多却没人看」。讲清如何把 AI 文案纳入 SEO 长尾词策略、多语言本地化、品牌一致性三道关卡。',
+        'date': '2026-10-09',
+        'iso': '2026-10-09',
+        'read': 6,
+        'html': (
+            '<h2>AI 内容的三个关卡</h2>'
+            '<p>大模型能批量产文案，但搜索要的是「能解决问题」的内容，营销要的是「能转化」的内容。两件事都不靠产量，靠策略。</p>'
+            '<h2>三道关卡</h2>'
+            '<ul>'
+            '<li><strong>SEO 长尾词</strong>：先定 100 个长尾关键词，每篇内容对应一个，别写「大而全」的标题党。</li>'
+            '<li><strong>品牌一致性</strong>：给模型一份「品牌调性手册」，统一语气、禁用词、CTA 句式，避免 AI 味太重。</li>'
+            '<li><strong>多语言本地化</strong>：不是机器直译，是按目标市场习惯重写；英文市场要「直接」，中文市场要「含蓄」。</li>'
+            '</ul>'
+            '<h2>持续生产系统</h2>'
+            '<p>建内容日历 + AI 草稿 + 人工审校三件套，每周稳定出 2–3 篇，搜索权重与品牌资产都在累积。</p>'
         ),
     },
 ]
@@ -168,21 +167,21 @@ BLOG_POSTS = [
 # 常见问题（FAQ 页 + 结构化数据用）
 FAQS = [
     {'q': '一个企业官网项目大概多久能上线？',
-     'a': '标准企业官网 2–4 周可交付上线：1 周需求与原型、2 周开发与联调、0.5 周测试与灰度发布。涉及 CMS、支付、多端同步的复杂项目周期相应延长，会在方案阶段给出明确节点表。'},
+     'a': '标准企业官网 2–4 周可交付上线：1 周需求与原型、2 周开发与联调、0.5 周测试与灰度发布。涉及 CMS、多端同步的复杂项目周期相应延长，会在方案阶段给出明确节点表。'},
     {'q': '怎么报价？有没有预算区间参考？',
-     'a': '按功能模块与人力投入报价，不做一口价。企业官网常见区间 3–15 万，桌面/APP 业务系统 8–50 万，AI 部署按算力与模型规模定制。我们会在 1 个工作日内给出分项报价单，无隐藏费用。'},
+     'a': '按功能模块与人力投入报价，不做一口价。企业官网常见区间 3–15 万，AI 应用按模型规模与场景复杂度 5–30 万，内容营销按月订阅 5 千起。我们会在 1 个工作日内给出分项报价单，无隐藏费用。'},
     {'q': '交付物包含哪些？源码和文档给不给？',
      'a': '100% 交付可运行源码、部署文档、接口文档、测试报告。代码支持你方技术团队直接接手，不做黑盒交付；关键模块附单元测试。'},
     {'q': '支持二次开发与技术交接吗？',
      'a': '支持。项目尾期提供 2 次 1 对 1 技术交接（代码走查 + 架构说明），并给 30 天免费答疑期，之后可选 SLA 长期陪跑。'},
     {'q': '上线后出问题谁负责？有 SLA 吗？',
      'a': '提供分级 SLA：常规缺陷 48h 内修复，线上故障 7×24 响应、4h 内出处理方案。SLA 违约按合同约定赔付。'},
-    {'q': '用 C#/.NET 或 C++/Qt 的 Windows 项目能做吗？',
-     'a': '可以做。团队 C#/.NET 8 与 C++/Qt 双栈，WPF/WinForms/Win32 API 均有商用交付案例，支持行业定制软件、内网办公系统、桌面工具。'},
-    {'q': 'AI 大模型部署支持私有化吗？数据会不会泄露？',
-     'a': '支持全私有化部署（本地 GPU 集群 / 边缘设备），数据不出你的机房。技术栈覆盖 PyTorch、vLLM、LangChain、RAG 知识库，从 PoC 到生产环境全程护航。'},
+    {'q': 'AI 应用支持哪些模型？能私有化部署吗？',
+     'a': '支持主流大模型（OpenAI、Claude、国产模型等），也支持全私有化部署（本地推理），数据不出你的机房。RAG 知识库、智能体、AI 问答均能落地，从 PoC 到生产全程护航。'},
+    {'q': '内容营销怎么收费？',
+     'a': '按月订阅制，按「长尾词数量 + 产出篇数」阶梯报价，无隐藏费用。每月交付 SEO 文章、多语言本地化、营销素材，含 1 次数据复盘报告。'},
     {'q': '可以先做一个小模块试点吗？',
-     'a': '可以。推荐以 2 周 PoC 起步：明确一个可演示的小闭环（如单个业务页面 / 一个接口 / 一个智能体），验证后再扩展，降低你的试错成本。'},
+     'a': '可以。推荐以 2 周 PoC 起步：明确一个可演示的小闭环（如一个 AI 问答、一个落地页、一个自动化脚本），验证效果后再扩展，降低你的试错成本。'},
 ]
 
 # ---------------------------------------------------------------------------
@@ -260,7 +259,7 @@ def service_detail(sid):
 
 @app.route('/admin')
 def admin():
-    return render_template('admin.html', site=SITE)
+    return render_template('admin.html', site=SITE, services=SERVICES)
 
 @app.route('/about')
 def about():
@@ -398,10 +397,10 @@ def build_static():
     pages = [
         ('/', 'index.html'),
         ('/services', 'services/index.html'),
+        ('/services/ai-agent', 'services/ai-agent/index.html'),
         ('/services/web', 'services/web/index.html'),
-        ('/services/windows', 'services/windows/index.html'),
-        ('/services/app', 'services/app/index.html'),
-        ('/services/ai', 'services/ai/index.html'),
+        ('/services/data-automation', 'services/data-automation/index.html'),
+        ('/services/ai-content', 'services/ai-content/index.html'),
         ('/about', 'about/index.html'),
         ('/faq', 'faq/index.html'),
         ('/blog', 'blog/index.html'),
