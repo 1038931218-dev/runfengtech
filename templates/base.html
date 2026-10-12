@@ -146,6 +146,11 @@
           <span class="cs-opt-ico">📝</span>
           <span class="cs-opt-main"><strong>在线表单</strong><small>1 个工作日内回复</small></span>
         </a>
+        <div class="cs-opt cs-opt-qr">
+          <span class="cs-opt-ico">💻</span>
+          <span class="cs-opt-main"><strong>企业微信 / 客服</strong><small>扫码添加，备注「{{ site.name }}」</small></span>
+          <div class="cs-qr"><img src="{{ url_for('static', filename='wechat-qr.svg') }}" alt="客服二维码" onerror="this.parentNode.style.display='none'" /></div>
+        </div>
       </div>
     </div>
     <button class="cs-fab" id="cs-fab" aria-label="在线客服">💬</button>
@@ -155,8 +160,12 @@
   {% endif %}
 
   <script src="{{ url_for('static', filename='js/supabase-config.js') }}"></script>
+  {% if request.endpoint == 'admin' %}
+  <script src="{{ url_for('static', filename='js/admin.js') }}"></script>
+  {% else %}
   <script src="{{ url_for('static', filename='js/cms.js') }}"></script>
   <script src="{{ url_for('static', filename='js/main.js') }}"></script>
   <script src="{{ url_for('static', filename='js/contact-api.js') }}"></script>
-  <script src="{{ url_for('static', filename='js/admin.js') }}"></script></body>
+  {% endif %}
+</body>
 </html>

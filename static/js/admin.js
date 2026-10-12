@@ -236,12 +236,54 @@
     try {
       var rows = await rest('messages?select=*&order=created_at.desc&limit=500');
       currentMessages = rows || [];
-      renderMessages(currentMessages);
+      fillSvcFilter();
+      applyFilters();
     } catch (e) {
       if (e.status === 401 || e.status === 403) { $('msg-body').innerHTML = '<tr><td colspan="6" class="empty">登录已失效，请重新登录</td></tr>'; logout(); return; }
       $('msg-body').innerHTML = '<tr><td colspan="6" class="empty">加载失败：' + esc(e.message) + '</td></tr>';
     }
   }
+
+  // 填充业务线下拉
+  function fillSvcFilter() {
+    var sel = document.getElementById('msg-filter-svc');
+    if (!sel) return;
+    var seen = {};
+    currentMessages.forEach(function (m) { if (m.service && !seen[m.service]) seen[m.service] = 1; });
+    var cur = sel.value;
+    sel.innerHTML = '<option value="">全部业务线</option>' +
+      Object.keys(SVC).filter(function (k) { return k !== 'other' || seen['other']; }).map(function (k) {
+        return '<option value="' + k + '">' + SVC[k] + '</option>';
+      }).join('');
+    if (cur && sel.querySelector('option[value="' + cur + '"]')) sel.value = cur;
+  }
+
+  // 按筛选条件渲染
+  function applyFilters() {
+    var svc = (document.getElementById('msg-filter-svc') || {}).value || '';
+    var read = (document.getElementById('msg-filter-read') || {}).value || '';
+    var kw = ((document.getElementById('msg-filter-kw') || {}).value || '').trim().toLowerCase();
+    var rows = currentMessages.filter(function (m) {
+      if (svc && m.service !== svc) return false;
+      if (read === 'unread' && m.is_read) return false;
+      if (read === 'read' && !m.is_read) return false;
+      if (kw) {
+        var hay = [m.name, m.company, m.phone, m.email, m.message].join(' ').toLowerCase();
+        if (hay.indexOf(kw) === -1) return false;
+      }
+      return true;
+    });
+    var cnt = document.getElementById('msg-count');
+    if (cnt) cnt.textContent = currentMessages.length ? ('显示 ' + rows.length + ' / ' + currentMessages.length) : '';
+    renderMessages(rows);
+  }
+
+  // 绑定筛选器
+  ['msg-filter-svc', 'msg-filter-read', 'msg-filter-kw'].forEach(function (id) {
+    var el = document.getElementById(id);
+    if (el) el.addEventListener('change', applyFilters);
+    if (el && el.id === 'msg-filter-kw') el.addEventListener('input', applyFilters);
+  });
 
   function esc(s) {
     return String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
@@ -249,7 +291,11 @@
 
   function renderMessages(rows) {
     var body = $('msg-body');
-    if (!rows.length) { body.innerHTML = '<tr><td colspan="6" class="empty">暂无留言</td></tr>'; return; }
+    if (!rows.length) {
+      body.innerHTML = '<tr><td colspan="6" class="empty">' +
+        (currentMessages.length ? '无匹配结果的留言' : '暂无留言') + '</td></tr>';
+      return;
+    }
     body.innerHTML = rows.map(function (m) {
       var dot = m.is_read ? '' : '<span class="unread-dot"></span>';
       return '<tr data-id="' + m.id + '">' +

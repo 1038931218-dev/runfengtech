@@ -2,6 +2,16 @@
 {% block title %}{{ post.title }} — {{ site.name }}{% endblock %}
 {% block description %}{{ post.excerpt }}{% endblock %}
 
+{% block head %}
+<link rel="canonical" href="https://homesmartlab.com/blog/{{ post.slug }}" />
+<meta property="article:published_time" content="{{ post.iso }}" />
+<meta property="article:author" content="{{ site.name }}" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="{{ post.title }}" />
+<meta property="og:description" content="{{ post.excerpt }}" />
+<meta property="og:url" content="https://homesmartlab.com/blog/{{ post.slug }}" />
+{% endblock %}
+
 {% block content %}
 <section class="page-head">
   <div class="container">

@@ -79,6 +79,12 @@
   .btn-link.danger:hover { background: #fdecec; }
   .toolbar { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; margin-bottom: 12px; }
   .toolbar .spacer { flex: 1; }
+  .mini-input {
+    padding: 6px 10px; border: 1px solid var(--line); border-radius: 8px; font-size: .85rem;
+    background: #fff; color: var(--ink); font-family: inherit;
+  }
+  .mini-input:focus { outline: none; border-color: var(--primary); }
+  .msg-count { color: var(--muted); font-size: .85rem; }
 
   .svc-edit-block { border: 1px dashed var(--line); border-radius: 10px; padding: 16px; margin-bottom: 14px; }
   .svc-edit-block .bt { font-weight: 700; margin-bottom: 12px; font-size: .92rem; }
@@ -331,6 +337,16 @@
             <button class="btn btn-ghost btn-sm" id="msg-refresh">↻ 刷新</button>
             <button class="btn btn-ghost btn-sm" id="msg-export">⬇ 导出 CSV</button>
             <div class="spacer"></div>
+            <select id="msg-filter-svc" class="mini-input" style="min-width:130px">
+              <option value="">全部业务线</option>
+            </select>
+            <select id="msg-filter-read" class="mini-input" style="min-width:90px">
+              <option value="">全部状态</option>
+              <option value="unread">未读</option>
+              <option value="read">已读</option>
+            </select>
+            <input id="msg-filter-kw" class="mini-input" placeholder="搜索关键词…" style="min-width:160px" />
+            <span class="msg-count" id="msg-count"></span>
           </div>
           <div class="admin-card">
             <div class="table-wrap">

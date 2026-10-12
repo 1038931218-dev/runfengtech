@@ -2,14 +2,24 @@
 {% block title %}404 — 页面不存在 · {{ site.name }}{% endblock %}
 
 {% block content %}
-<section class="section" style="padding:120px 0">
+<section class="section" style="padding:100px 0 60px">
   <div class="container center">
     <div class="err-code">404</div>
     <h1>页面不存在或已被移除</h1>
-    <p class="muted">你访问的地址 {{ request.path }} 无法找到。</p>
+    <p class="muted">你访问的地址 <code style="font-size:.9rem">{{ request.path }}</code> 无法找到。</p>
     <div class="hero-actions" style="justify-content:center">
       <a class="btn btn-primary" href="{{ url_for('index') }}">回到首页</a>
       <a class="btn btn-ghost" href="{{ url_for('services') }}">查看业务线</a>
+      <a class="btn btn-ghost" href="{{ url_for('contact') }}">联系我们</a>
+    </div>
+
+    <div class="quick-links">
+      <span class="ql-label">热门页面：</span>
+      <a href="{{ url_for('index') }}">首页</a>
+      <a href="{{ url_for('services') }}">业务线</a>
+      <a href="{{ url_for('about') }}">关于我们</a>
+      <a href="{{ url_for('blog') }}">博客</a>
+      <a href="{{ url_for('faq') }}">FAQ</a>
     </div>
   </div>
 </section>
