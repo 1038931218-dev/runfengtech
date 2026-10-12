@@ -20,21 +20,24 @@
         <span class="brand-name" data-cms="general.site_name">{{ site.name }}</span>
       </a>
       <nav class="nav">
-        <a href="{{ url_for('index') }}" class="{{ 'active' if request.endpoint == 'index' }}">首页</a>
-        <a href="{{ url_for('services') }}" class="{{ 'active' if request.endpoint in ('services','service_detail') }}">业务线</a>
-        <a href="{{ url_for('about') }}" class="{{ 'active' if request.endpoint == 'about' }}">关于我们</a>
-        <a href="{{ url_for('blog') }}" class="{{ 'active' if request.endpoint in ('blog','post') }}">博客</a>
-        <a href="{{ url_for('faq') }}" class="{{ 'active' if request.endpoint == 'faq' }}">FAQ</a>
-        <a href="{{ url_for('contact') }}" class="nav-cta {{ 'active' if request.endpoint == 'contact' }}">联系我们</a>
+        <a href="{{ url_for('index') }}" class="{{ 'active' if request.endpoint == 'index' }}" data-i18n="nav.home" data-i18n-default="首页">首页</a>
+        <a href="{{ url_for('services') }}" class="{{ 'active' if request.endpoint in ('services','service_detail') }}" data-i18n="nav.services" data-i18n-default="业务线">业务线</a>
+        <a href="{{ url_for('about') }}" class="{{ 'active' if request.endpoint == 'about' }}" data-i18n="nav.about" data-i18n-default="关于我们">关于我们</a>
+        <a href="{{ url_for('blog') }}" class="{{ 'active' if request.endpoint in ('blog','post') }}" data-i18n="nav.blog" data-i18n-default="博客">博客</a>
+        <a href="{{ url_for('faq') }}" class="{{ 'active' if request.endpoint == 'faq' }}" data-i18n="nav.faq" data-i18n-default="FAQ">FAQ</a>
+        <a href="{{ url_for('contact') }}" class="nav-cta {{ 'active' if request.endpoint == 'contact' }}" data-i18n="nav.contact" data-i18n-default="联系我们">联系我们</a>
       </nav>
       <button class="nav-toggle" aria-label="菜单" onclick="document.querySelector('.nav').classList.toggle('open')">☰</button>
     </div>
   </header>
   {% endif %}
 
-  <!-- 主题切换按钮（仅官网页） -->
+  <!-- 主题切换 + 语言切换按钮（仅官网页） -->
   {% if request.endpoint != 'admin' %}
-  <button class="theme-toggle" id="theme-toggle" aria-label="切换深色模式" title="切换深色模式">🌙</button>
+  <div class="top-tools">
+    <button class="theme-toggle" id="theme-toggle" aria-label="切换深色模式" title="切换深色模式">🌙</button>
+    <button class="lang-toggle" id="lang-toggle" aria-label="切换语言" title="Switch to English">EN</button>
+  </div>
   <script>
   (function () {
     var KEY = 'rf_theme';
@@ -94,7 +97,7 @@
         <p class="muted small" data-cms="general.full_name">{{ site.full_name }}</p>
       </div>
       <div class="footer-col">
-        <h4>联系我们</h4>
+        <h4 data-i18n="footer.contact" data-i18n-default="联系我们">联系我们</h4>
         <ul class="contact-list">
           <li>📞 <span data-cms="general.phone">{{ site.phone }}</span></li>
           <li>📱 <span data-cms="general.mobile">{{ site.mobile }}</span></li>
@@ -103,7 +106,7 @@
         </ul>
       </div>
       <div class="footer-col">
-        <h4>业务线</h4>
+        <h4 data-i18n="footer.services" data-i18n-default="业务线">业务线</h4>
         <ul class="link-list">
           <li><a href="{{ url_for('service_detail', sid='web') }}">网站开发</a></li>
           <li><a href="{{ url_for('service_detail', sid='windows') }}">Windows 软件</a></li>
@@ -148,6 +151,7 @@
     <button class="cs-fab" id="cs-fab" aria-label="在线客服">💬</button>
   </div>
   <script src="{{ url_for('static', filename='js/live-chat.js') }}"></script>
+  <script src="{{ url_for('static', filename='js/i18n.js') }}"></script>
   {% endif %}
 
   <script src="{{ url_for('static', filename='js/supabase-config.js') }}"></script>

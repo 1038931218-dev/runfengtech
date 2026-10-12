@@ -38,7 +38,7 @@
 <section class="hero">
   <div class="container hero-inner">
     <div class="hero-text">
-      <span class="hero-tag" data-cms="hero.badge">技术驱动 · 端到端交付</span>
+      <span class="hero-tag" data-cms="hero.badge" data-i18n="hero.badge" data-i18n-default="技术驱动 · 端到端交付">技术驱动 · 端到端交付</span>
       <h1 data-cms-html="hero.title">{{ site.name }}<br />让技术落地，为业务赋能</h1>
       <p class="lead" data-cms-html="hero.subtitle">
         专注 <strong>网站开发</strong>、<strong>Windows 软件</strong>、<strong>手机 APP</strong> 与
@@ -133,10 +133,10 @@
 <section class="section cta-band">
   <div class="container cta-inner">
     <div>
-      <h2 data-cms="cta.title">有想法？我们帮你落地。</h2>
-      <p data-cms="cta.subtitle">留下需求，1 个工作日内 1 对 1 沟通，输出可执行方案。</p>
+      <h2 data-cms="cta.title" data-i18n="cta.title" data-i18n-default="有想法？我们帮你落地。">有想法？我们帮你落地。</h2>
+      <p data-cms="cta.subtitle" data-i18n="cta.subtitle" data-i18n-default="留下需求，1 个工作日内 1 对 1 沟通，输出可执行方案。">留下需求，1 个工作日内 1 对 1 沟通，输出可执行方案。</p>
     </div>
-    <a href="{{ url_for('contact') }}" class="btn btn-light" data-cms="cta.button">提交需求 →</a>
+    <a href="{{ url_for('contact') }}" class="btn btn-light" data-cms="cta.button" data-i18n="cta.button" data-i18n-default="提交需求 →">提交需求 →</a>
   </div>
 </section>
 {% endblock %}
