@@ -11,8 +11,8 @@
   {% block head %}{% endblock %}
 </head>
 <body>
-  {% if request.endpoint != 'admin' %}
   <!-- 顶部导航（后台页不渲染） -->
+  {% if request.endpoint != 'admin' %}
   <header class="site-header">
     <div class="container nav-wrap">
       <a class="brand" href="{{ url_for('index') }}">
@@ -27,17 +27,16 @@
         <a href="{{ url_for('faq') }}" class="{{ 'active' if request.endpoint == 'faq' }}" data-i18n="nav.faq" data-i18n-default="FAQ">FAQ</a>
         <a href="{{ url_for('contact') }}" class="nav-cta {{ 'active' if request.endpoint == 'contact' }}" data-i18n="nav.contact" data-i18n-default="联系我们">联系我们</a>
       </nav>
+      <div class="top-tools">
+        <button class="theme-toggle" id="theme-toggle" aria-label="切换深色模式" title="切换深色模式">🌙</button>
+        <button class="lang-toggle" id="lang-toggle" aria-label="切换语言" title="Switch to English">EN</button>
+      </div>
       <button class="nav-toggle" aria-label="菜单" onclick="document.querySelector('.nav').classList.toggle('open')">☰</button>
     </div>
   </header>
   {% endif %}
-
-  <!-- 主题切换 + 语言切换按钮（仅官网页） -->
+  <!-- 主题/语言切换脚本（仅官网页生效，后台页无对应按钮） -->
   {% if request.endpoint != 'admin' %}
-  <div class="top-tools">
-    <button class="theme-toggle" id="theme-toggle" aria-label="切换深色模式" title="切换深色模式">🌙</button>
-    <button class="lang-toggle" id="lang-toggle" aria-label="切换语言" title="Switch to English">EN</button>
-  </div>
   <script>
   (function () {
     var KEY = 'rf_theme';

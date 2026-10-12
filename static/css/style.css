@@ -357,19 +357,27 @@ h1, h2, h3, h4 { line-height: 1.25; letter-spacing: -0.01em; }
 .footer-bottom .container { display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
 .footer-bottom a { color: #8fa0b8; }
 
-/* 顶部工具组（主题 + 语言） */
+/* 顶部工具组（主题 + 语言），作为 header 内常规元素 */
 .top-tools {
-  position: fixed; top: 14px; right: 22px; z-index: 61;
-  display: flex; gap: 8px;
+  display: flex; gap: 6px; align-items: center;
 }
 .theme-toggle, .lang-toggle {
-  width: 40px; height: 40px; border-radius: 50%;
+  width: 34px; height: 34px; border-radius: 50%;
   background: var(--card); border: 1px solid var(--line);
-  cursor: pointer; font-size: 1rem; display: grid; place-items: center;
-  box-shadow: var(--shadow); transition: transform .18s ease;
+  cursor: pointer; font-size: .95rem; display: grid; place-items: center;
+  transition: transform .18s ease;
 }
-.theme-toggle:hover, .lang-toggle:hover { transform: scale(1.08); }
-.lang-toggle { font-size: .82rem; font-weight: 700; letter-spacing: .04em; }
+.theme-toggle:hover, .lang-toggle:hover { transform: scale(1.06); }
+.lang-toggle { font-size: .78rem; font-weight: 700; letter-spacing: .04em; }
+/* 移动端：顶部工具 + 菜单按钮排成一排，位于头部右侧 */
+@media (max-width: 640px) {
+  .nav-wrap { justify-content: flex-start; }
+  .nav-wrap .brand { margin-right: auto; }
+  .nav-wrap .top-tools { order: 3; margin-left: auto; }
+  .nav-wrap .nav-toggle { order: 4; }
+  .top-tools { gap: 4px; }
+  .theme-toggle, .lang-toggle { width: 30px; height: 30px; font-size: .85rem; }
+}
 
 /* 返回顶部 */
 .back-to-top {
@@ -401,8 +409,8 @@ h1, h2, h3, h4 { line-height: 1.25; letter-spacing: -0.01em; }
   .blog-grid { grid-template-columns: 1fr; }
   .cta-inner { flex-direction: column; align-items: flex-start; }
   .nav { display: none; position: absolute; top: var(--header-h); left: 0; right: 0;
-    background: #fff; flex-direction: column; padding: 16px 24px; gap: 14px;
-    border-bottom: 1px solid var(--line); box-shadow: var(--shadow); }
+    background: var(--card); flex-direction: column; padding: 16px 24px; gap: 14px;
+    border-bottom: 1px solid var(--line); box-shadow: var(--shadow); z-index: 55; }
   .nav.open { display: flex; }
   .nav-toggle { display: block; }
 }
