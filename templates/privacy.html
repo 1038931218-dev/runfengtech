@@ -1,0 +1,105 @@
+{% extends 'base.html' %}
+{% block title %}隐私政策 — {{ site.name }}{% endblock %}
+{% block description %}{{ site.name }}隐私政策：说明我们收集哪些信息、如何使用与存储、保留期限，以及您如何查询、更正或删除您的信息。{% endblock %}
+
+{% block breadcrumb %}
+<nav class="breadcrumb" aria-label="面包屑导航">
+  <div class="container">
+    <a href="{{ url_for('index') }}">首页</a>
+    <span aria-hidden="true">/</span>
+    <span class="cur" aria-current="page">隐私政策</span>
+  </div>
+</nav>
+{% endblock %}
+
+{% block head %}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {"@type": "ListItem", "position": 1, "name": "首页", "item": "{{ site.url }}/"},
+    {"@type": "ListItem", "position": 2, "name": "隐私政策", "item": "{{ site.url }}/privacy"}
+  ]
+}
+</script>
+{% endblock %}
+
+{% block content %}
+<section class="page-head">
+  <div class="container">
+    <span class="tag">法律条款</span>
+    <h1>隐私政策</h1>
+    <p class="lead">最近更新：{{ site.year }} 年。本政策说明 {{ site.full_name }}（下称"我们"）在本网站收集、使用与保护您个人信息的方式。</p>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container narrow">
+    <article class="article-body legal-body">
+      <h2>1. 我们收集哪些信息</h2>
+      <p>我们只收集您在本站主动填写的信息，以及保证网站正常运行所必需的技术信息：</p>
+      <ul>
+        <li><strong>您主动提交的信息</strong>：当您填写"联系我们"表单或在线客服表单时，我们收集您填写的<strong>称呼、公司名称、电话、邮箱、意向业务线与需求描述</strong>。</li>
+        <li><strong>为提供服务所必需</strong>：上述信息用于与您取得联系、了解需求并给出方案，不做他用。</li>
+        <li><strong>本地存储</strong>：本站使用浏览器 <code>localStorage</code> 保存两项偏好——主题（深色/浅色）与界面语言（中文/English）。这两项数据<strong>仅保存在您自己的浏览器中</strong>，不会上传到服务器。</li>
+        <li><strong>我们不使用</strong>广告追踪 Cookie，不接入第三方广告网络，不做用户画像。</li>
+      </ul>
+
+      <h2>2. 信息如何被使用</h2>
+      <ul>
+        <li>回复您的咨询、提供报价与方案；</li>
+        <li>在合作期间进行项目沟通与交付；</li>
+        <li>统计咨询量以改进服务（仅使用汇总数据，不针对个人）。</li>
+      </ul>
+      <p>我们<strong>不会</strong>将您的信息出售、出租或以任何形式提供给与上述目的无关的第三方。</p>
+
+      <h2>3. 信息存储在哪里</h2>
+      <p>表单提交的数据存储于 <strong>Supabase</strong>（数据库托管服务）的加密数据库中，通过行级安全策略（RLS）保护：</p>
+      <ul>
+        <li>访客身份<strong>只能写入</strong>表单数据，<strong>无法读取</strong>任何留言记录；</li>
+        <li>仅本站管理员账号（已通过邮箱校验）可以查看、标记与删除留言；</li>
+        <li>网站内容通过 <strong>GitHub Pages</strong> 静态托管，不存储任何访客个人信息。</li>
+      </ul>
+
+      <h2>4. 保留期限</h2>
+      <p>咨询信息自提交之日起保留 <strong>24 个月</strong>。超过期限或您主动要求删除时，我们会在 7 个工作日内删除相关记录。</p>
+
+      <h2>5. 您的权利</h2>
+      <p>您可以随时要求我们：</p>
+      <ul>
+        <li><strong>查询</strong>：告知我们持有您的哪些信息；</li>
+        <li><strong>更正</strong>：修正不准确的信息；</li>
+        <li><strong>删除</strong>：删除您的全部记录；</li>
+        <li><strong>撤回同意</strong>：停止后续联系。</li>
+      </ul>
+      <p>发送邮件至 <a href="mailto:{{ site.email }}">{{ site.email }}</a>，或致电 <a href="tel:{{ site.phone | replace('-', '') }}">{{ site.phone }}</a>，我们将在 7 个工作日内处理。</p>
+
+      <h2>6. 信息安全</h2>
+      <ul>
+        <li>全站启用 HTTPS 加密传输；</li>
+        <li>数据库启用行级安全策略，权限在数据库层强制校验，不依赖前端限制；</li>
+        <li>管理员账号使用独立密码与登录令牌，令牌仅在会话期间有效；</li>
+        <li>我们定期检查权限配置，避免数据被非授权访问。</li>
+      </ul>
+
+      <h2>7. 未成年人</h2>
+      <p>本站面向企业客户，不面向未成年人收集信息。若您未满 18 周岁，请在监护人同意后使用本站表单。</p>
+
+      <h2>8. 政策更新</h2>
+      <p>本政策如有修改，我们会在本页面更新并标注日期。继续使用本站即表示您接受更新后的政策。</p>
+
+      <h2>9. 联系我们</h2>
+      <div class="legal-contact card">
+        <ul class="contact-list">
+          <li>📞 电话：<a href="tel:{{ site.phone | replace('-', '') }}">{{ site.phone }}</a></li>
+          <li>✉️ 邮箱：<a href="mailto:{{ site.email }}">{{ site.email }}</a></li>
+          <li>📍 地址：{{ site.address }}</li>
+        </ul>
+      </div>
+
+      <p class="muted small">本页为通用性说明。若您所在地区的法律对个人信息保护有更高要求，以当地法律为准，并可随时联系我们补充约定。</p>
+    </article>
+  </div>
+</section>
+{% endblock %}

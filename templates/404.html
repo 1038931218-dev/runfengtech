@@ -1,5 +1,7 @@
 {% extends 'base.html' %}
 {% block title %}404 — 页面不存在 · {{ site.name }}{% endblock %}
+{% block robots %}<meta name="robots" content="noindex,follow" />{% endblock %}
+{% block canonical %}{% endblock %}
 
 {% block content %}
 <section class="section" style="padding:100px 0 60px">

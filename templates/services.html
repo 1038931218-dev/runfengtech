@@ -1,5 +1,16 @@
 {% extends 'base.html' %}
 {% block title %}业务线 — {{ site.name }}{% endblock %}
+{% block description %}润锋科技四条业务线：AI 智能应用、企业官网与落地页、数据与自动化、内容与营销。查看每条业务线的可交付物与技术栈。{% endblock %}
+
+{% block breadcrumb %}
+<nav class="breadcrumb" aria-label="面包屑导航">
+  <div class="container">
+    <a href="{{ url_for('index') }}">首页</a>
+    <span aria-hidden="true">/</span>
+    <span class="cur" aria-current="page">业务线</span>
+  </div>
+</nav>
+{% endblock %}
 
 {% block content %}
 <section class="page-head">

@@ -2,37 +2,6 @@
 {% block title %}{{ site.name }} — AI 智能应用 · 企业官网 · 数据自动化 · 内容营销{% endblock %}
 {% block description %}润锋科技以 AI 为核心能力，提供 AI 智能应用、企业官网与落地页、数据与自动化、内容与营销四条业务线，端到端交付、可实时改文案。{% endblock %}
 
-{% block head %}
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "Organization",
-  "name": "{{ site.name }}",
-  "url": "https://homesmartlab.com",
-  "logo": "https://homesmartlab.com/static/logo-a.svg",
-  "description": "{{ site.slogan }}",
-  "contactPoint": [
-    {"@type": "ContactPoint", "telephone": "{{ site.phone | replace('-', '') }}", "contactType": "customer service"},
-    {"@type": "ContactPoint", "email": "{{ site.email }}", "contactType": "sales"}
-  ],
-  "address": {
-    "@type": "PostalAddress",
-    "streetAddress": "{{ site.address }}",
-    "addressCountry": "CN"
-  },
-  "sameAs": []
-}
-</script>
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "WebSite",
-  "name": "{{ site.name }}",
-  "url": "https://homesmartlab.com"
-}
-</script>
-{% endblock %}
-
 {% block content %}
 <!-- Hero -->
 <section class="hero">

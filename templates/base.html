@@ -3,14 +3,77 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <!-- 内容安全策略（静态站无法自定义响应头，用 meta 兜底） -->
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; base-uri 'self'; form-action 'self'; object-src 'none'; img-src 'self' data:; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline'; connect-src 'self' https://mxkufvhtaqfwhimfefit.supabase.co; font-src 'self' data:" />
   <title data-cms="general.site_title">{% block title %}{{ site.name }} — {{ site.slogan }}{% endblock %}</title>
   <meta name="description" data-cms-content="general.description" content="{% block description %}{{ site.name }}以 AI 为核心能力，提供 AI 智能应用、企业官网、数据与自动化、内容营销四条业务线，端到端交付。{% endblock %}" />
+
+  {% block canonical %}<link rel="canonical" href="{{ site.url }}{{ request.path }}" />{% endblock %}
+  {% block robots %}<meta name="robots" content="index,follow,max-image-preview:large" />{% endblock %}
+
+  <!-- Open Graph / Twitter 卡片 -->
+  {% block og %}
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="{{ site.name }}" />
+  <meta property="og:locale" content="zh_CN" />
+  <meta property="og:title" content="{{ self.title() | striptags | trim }}" />
+  <meta property="og:description" content="{{ self.description() | striptags | trim }}" />
+  <meta property="og:url" content="{{ site.url }}{{ request.path }}" />
+  <meta property="og:image" content="{{ site.url }}/static/logo-a-preview.png" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="{{ self.title() | striptags | trim }}" />
+  <meta name="twitter:description" content="{{ self.description() | striptags | trim }}" />
+  <meta name="twitter:image" content="{{ site.url }}/static/logo-a-preview.png" />
+  {% endblock %}
+
+  <!-- 主题色 / 图标 / 可添加到主屏 -->
+  <meta name="theme-color" content="#0b5fff" media="(prefers-color-scheme: light)" />
+  <meta name="theme-color" content="#0b1220" media="(prefers-color-scheme: dark)" />
   <link rel="icon" href="{{ url_for('static', filename='favicon.svg') }}" type="image/svg+xml" />
+  <link rel="apple-touch-icon" href="{{ url_for('static', filename='logo-a-preview.png') }}" />
+  <link rel="manifest" href="{{ url_for('static', filename='manifest.webmanifest') }}" />
+
+  <!-- 预连接：提前建连 Supabase，加速 CMS 文案拉取 -->
+  <link rel="preconnect" href="https://mxkufvhtaqfwhimfefit.supabase.co" crossorigin />
+  <link rel="dns-prefetch" href="https://mxkufvhtaqfwhimfefit.supabase.co" />
+
   <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" />
   <link rel="stylesheet" href="{{ url_for('static', filename='css/blog.css') }}" />
+
+  <!-- 全站结构化数据：本地服务商 + 网站 -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "ProfessionalService",
+    "name": "{{ site.name }}",
+    "legalName": "{{ site.full_name }}",
+    "url": "{{ site.url }}",
+    "logo": "{{ site.url }}/static/logo-a.svg",
+    "image": "{{ site.url }}/static/logo-a-preview.png",
+    "description": "{{ site.slogan }}",
+    "slogan": "{{ site.slogan }}",
+    "telephone": "{{ site.phone | replace('-', '') }}",
+    "email": "{{ site.email }}",
+    "address": {"@type": "PostalAddress", "streetAddress": "{{ site.address }}", "addressCountry": "CN"},
+    "areaServed": {"@type": "Country", "name": "中国"},
+    "priceRange": "¥¥",
+    "serviceType": ["AI 智能应用", "企业官网与落地页", "数据与自动化", "内容与营销"]
+  }
+  </script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "name": "{{ site.name }}",
+    "url": "{{ site.url }}",
+    "inLanguage": "zh-CN",
+    "publisher": {"@type": "Organization", "name": "{{ site.name }}"}
+  }
+  </script>
   {% block head %}{% endblock %}
 </head>
 <body>
+  <a class="skip-link" href="#main">跳到主要内容</a>
   <!-- 顶部导航（后台页不渲染） -->
   {% if request.endpoint != 'admin' %}
   <header class="site-header">
@@ -19,7 +82,7 @@
         <img class="brand-logo" src="{{ url_for('static', filename='logo-a.svg') }}" alt="润锋科技 logo" />
         <span class="brand-name" data-cms="general.site_name">{{ site.name }}</span>
       </a>
-      <nav class="nav">
+      <nav class="nav" id="site-nav" aria-label="主导航">
         <a href="{{ url_for('index') }}" class="{{ 'active' if request.endpoint == 'index' }}" data-i18n="nav.home" data-i18n-default="首页">首页</a>
         <a href="{{ url_for('services') }}" class="{{ 'active' if request.endpoint in ('services','service_detail') }}" data-i18n="nav.services" data-i18n-default="业务线">业务线</a>
         <a href="{{ url_for('about') }}" class="{{ 'active' if request.endpoint == 'about' }}" data-i18n="nav.about" data-i18n-default="关于我们">关于我们</a>
@@ -31,9 +94,29 @@
         <button class="theme-toggle" id="theme-toggle" aria-label="切换深色模式" title="切换深色模式">🌙</button>
         <button class="lang-toggle" id="lang-toggle" aria-label="切换语言" title="Switch to English">EN</button>
       </div>
-      <button class="nav-toggle" aria-label="菜单" onclick="document.querySelector('.nav').classList.toggle('open')">☰</button>
+      <button class="nav-toggle" id="nav-toggle" aria-label="打开导航菜单" aria-expanded="false" aria-controls="site-nav">☰</button>
     </div>
   </header>
+  <script>
+  (function () {
+    var t = document.getElementById('nav-toggle');
+    var n = document.getElementById('site-nav');
+    if (!t || !n) return;
+    function setOpen(open) {
+      n.classList.toggle('open', open);
+      t.setAttribute('aria-expanded', open ? 'true' : 'false');
+      t.setAttribute('aria-label', open ? '关闭导航菜单' : '打开导航菜单');
+    }
+    t.addEventListener('click', function () { setOpen(!n.classList.contains('open')); });
+    n.addEventListener('click', function (e) { if (e.target.tagName === 'A') setOpen(false); });
+    document.addEventListener('click', function (e) {
+      if (!n.classList.contains('open')) return;
+      if (n.contains(e.target) || t.contains(e.target)) return;
+      setOpen(false);
+    });
+    document.addEventListener('keydown', function (e) { if (e.key === 'Escape') setOpen(false); });
+  })();
+  </script>
   {% endif %}
   <!-- 主题/语言切换脚本（仅官网页生效，后台页无对应按钮） -->
   {% if request.endpoint != 'admin' %}
@@ -70,7 +153,7 @@
   </script>
   {% endif %}
 
-  <main>
+  <main id="main" tabindex="-1">
     {% with messages = get_flashed_messages(with_categories=true) %}
       {% if messages %}
         <div class="container flash-wrap">
@@ -80,6 +163,7 @@
         </div>
       {% endif %}
     {% endwith %}
+    {% block breadcrumb %}{% endblock %}
     {% block content %}{% endblock %}
   </main>
 
@@ -112,6 +196,7 @@
           <li><a href="{{ url_for('service_detail', sid='data-automation') }}">数据与自动化</a></li>
           <li><a href="{{ url_for('service_detail', sid='ai-content') }}">内容与营销</a></li>
           <li><a href="{{ url_for('faq') }}">常见问题</a></li>
+          <li><a href="{{ url_for('privacy') }}">隐私政策</a></li>
         </ul>
       </div>
     </div>
@@ -126,6 +211,11 @@
 
   <!-- 在线客服悬浮按钮（后台页不渲染） -->
   {% if request.endpoint != 'admin' %}
+  <!-- 移动端底部转化条 -->
+  <div class="mobile-cta" role="group" aria-label="快捷联系">
+    <a class="mcta-btn" href="tel:{{ site.phone | replace('-', '') }}"><span aria-hidden="true">📞</span>电话咨询</a>
+    <a class="mcta-btn mcta-primary" href="{{ url_for('contact') }}"><span aria-hidden="true">📝</span>提交需求</a>
+  </div>
   <div class="cs-fab-wrap">
     <div class="cs-panel" id="cs-panel" hidden>
       <div class="cs-panel-head">
@@ -154,17 +244,17 @@
     </div>
     <button class="cs-fab" id="cs-fab" aria-label="在线客服">💬</button>
   </div>
-  <script src="{{ url_for('static', filename='js/live-chat.js') }}"></script>
-  <script src="{{ url_for('static', filename='js/i18n.js') }}"></script>
+  <script src="{{ url_for('static', filename='js/live-chat.js') }}" defer></script>
+  <script src="{{ url_for('static', filename='js/i18n.js') }}" defer></script>
   {% endif %}
 
   <script src="{{ url_for('static', filename='js/supabase-config.js') }}"></script>
   {% if request.endpoint == 'admin' %}
-  <script src="{{ url_for('static', filename='js/admin.js') }}"></script>
+  <script src="{{ url_for('static', filename='js/admin.js') }}" defer></script>
   {% else %}
-  <script src="{{ url_for('static', filename='js/cms.js') }}"></script>
-  <script src="{{ url_for('static', filename='js/main.js') }}"></script>
-  <script src="{{ url_for('static', filename='js/contact-api.js') }}"></script>
+  <script src="{{ url_for('static', filename='js/cms.js') }}" defer></script>
+  <script src="{{ url_for('static', filename='js/main.js') }}" defer></script>
+  <script src="{{ url_for('static', filename='js/contact-api.js') }}" defer></script>
   {% endif %}
 </body>
 </html>

@@ -33,6 +33,7 @@ SITE = {
     'full_name': '润锋科技有限公司',
     'slogan': '让技术落地，为业务赋能',
     'domain': 'homesmartlab.com',
+    'url': 'https://homesmartlab.com',
     'phone': '177-6047-2101',
     'mobile': '177-6047-2101',
     'email': '262633158@qq.com',
@@ -269,6 +270,10 @@ def about():
 def faq():
     return render_template('faq.html', site=SITE, faqs=FAQS)
 
+@app.route('/privacy')
+def privacy():
+    return render_template('privacy.html', site=SITE)
+
 @app.route('/blog')
 def blog():
     return render_template('blog.html', site=SITE, posts=BLOG_POSTS)
@@ -403,14 +408,12 @@ def build_static():
         ('/services/ai-content', 'services/ai-content/index.html'),
         ('/about', 'about/index.html'),
         ('/faq', 'faq/index.html'),
+        ('/privacy', 'privacy/index.html'),
         ('/blog', 'blog/index.html'),
         ('/contact', 'contact/index.html'),
         ('/admin', 'admin/index.html'),
     ]
     # 博客详情子页（动态追加）
-    for p in BLOG_POSTS:
-        pages.append(('/blog/' + p['slug'], 'blog/' + p['slug'] + '/index.html'))
-    # 博客详情子页
     for p in BLOG_POSTS:
         pages.append(('/blog/' + p['slug'], 'blog/' + p['slug'] + '/index.html'))
 

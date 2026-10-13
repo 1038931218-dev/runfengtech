@@ -1,5 +1,16 @@
 {% extends 'base.html' %}
 {% block title %}关于我们 — {{ site.name }}{% endblock %}
+{% block description %}润锋科技团队介绍：以 AI 为核心能力，做能持续被使用、被迭代的系统。了解我们的交付理念、流程与团队构成。{% endblock %}
+
+{% block breadcrumb %}
+<nav class="breadcrumb" aria-label="面包屑导航">
+  <div class="container">
+    <a href="{{ url_for('index') }}">首页</a>
+    <span aria-hidden="true">/</span>
+    <span class="cur" aria-current="page">关于我们</span>
+  </div>
+</nav>
+{% endblock %}
 
 {% block content %}
 <section class="page-head">

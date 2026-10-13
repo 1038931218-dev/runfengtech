@@ -2,6 +2,16 @@
 {% block title %}常见问题 FAQ — {{ site.name }}{% endblock %}
 {% block description %}润锋科技常见问题解答：报价周期、技术栈、交付标准、售后 SLA 等。{% endblock %}
 
+{% block breadcrumb %}
+<nav class="breadcrumb" aria-label="面包屑导航">
+  <div class="container">
+    <a href="{{ url_for('index') }}">首页</a>
+    <span aria-hidden="true">/</span>
+    <span class="cur" aria-current="page">常见问题</span>
+  </div>
+</nav>
+{% endblock %}
+
 {% block content %}
 <section class="page-head">
   <div class="container">

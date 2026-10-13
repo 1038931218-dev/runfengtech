@@ -64,6 +64,15 @@
     e.preventDefault();
 
     var fd = new FormData(form);
+
+    // 蜜罐命中 → 机器人。静默假装成功，不写库。
+    if ((fd.get('website') || '').trim()) {
+      var hpBtn = form.querySelector('button[type=submit]');
+      hpBtn.innerHTML = '✓ 已收到';
+      form.reset();
+      return;
+    }
+
     var data = {
       name: (fd.get('name') || '').trim(),
       company: (fd.get('company') || '').trim(),
@@ -78,6 +87,12 @@
     if (!data.name) errors.push('请填写您的称呼');
     if (!data.phone && !data.email) errors.push('请至少填写电话或邮箱');
     if (!data.message) errors.push('请描述您的需求');
+    if (data.phone && !/^1[3-9]\d{9}$/.test(data.phone.replace(/[\s\-]/g, ''))) {
+      errors.push('手机号格式不正确（应为 11 位、1 开头）');
+    }
+    if (data.email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(data.email)) {
+      errors.push('邮箱格式不正确');
+    }
     if (errors.length) {
       alert(errors.join('\n'));
       return;

@@ -1,0 +1,30 @@
+{
+  "name": "润锋科技 — 让技术落地，为业务赋能",
+  "short_name": "润锋科技",
+  "description": "AI 智能应用 · 企业官网 · 数据自动化 · 内容营销",
+  "lang": "zh-CN",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#0b5fff",
+  "icons": [
+    {
+      "src": "/static/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    },
+    {
+      "src": "/static/logo-a-preview.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    }
+  ],
+  "shortcuts": [
+    { "name": "业务线", "url": "/services" },
+    { "name": "联系我们", "url": "/contact" },
+    { "name": "常见问题", "url": "/faq" }
+  ]
+}
