@@ -286,7 +286,12 @@
   });
 
   function esc(s) {
-    return String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+    return String(s == null ? '' : s)
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#39;');
   }
 
   function renderMessages(rows) {
@@ -301,7 +306,7 @@
       return '<tr data-id="' + m.id + '">' +
         '<td>' + dot + esc(m.name) + (m.company ? '<br><span class="muted small">' + esc(m.company) + '</span>' : '') + '</td>' +
         '<td>' + esc(m.phone || m.email || '-') + '</td>' +
-        '<td>' + (SVC[m.service] || m.service || '-') + '</td>' +
+        '<td>' + esc(SVC[m.service] || m.service || '-') + '</td>' +
         '<td class="msg-cell" title="' + esc(m.message) + '">' + esc(m.message) + '</td>' +
         '<td class="muted small">' + new Date(m.created_at).toLocaleString('zh-CN') + '</td>' +
         '<td><button class="btn-link" data-act="read" data-id="' + m.id + '">标已读</button>' +
@@ -365,7 +370,7 @@
       body.innerHTML = recent.map(function (m) {
         return '<tr><td>' + (m.is_read ? '' : '<span class="unread-dot"></span>') + esc(m.name) + '</td>' +
           '<td>' + esc(m.phone || m.email || '-') + '</td>' +
-          '<td>' + (SVC[m.service] || m.service || '-') + '</td>' +
+          '<td>' + esc(SVC[m.service] || m.service || '-') + '</td>' +
           '<td class="msg-cell" title="' + esc(m.message) + '">' + esc(m.message) + '</td>' +
           '<td class="muted small">' + new Date(m.created_at).toLocaleString('zh-CN') + '</td></tr>';
       }).join('');
